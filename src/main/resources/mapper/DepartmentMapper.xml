@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.huat.mapper.DepartmentMapper" >
+    <resultMap id="BaseResultMap" type="cn.huat.pojo.Department" >
+        <result column="departmentNo" property="departmentNo" jdbcType="VARCHAR" />
+        <result column="departmentName" property="departmentName" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+   departmentNo,departmentName
+  </sql>
+    <select id="findDepartment" resultType="cn.huat.pojo.Department">
+        select   <include refid="Base_Column_List" />
+        from department
+    </select>
+
+    <select id="findByNo" resultType="java.lang.String" parameterType="java.lang.Integer">
+        select  departmentName
+        from department where departmentNo = #{no}
+    </select>
+</mapper>

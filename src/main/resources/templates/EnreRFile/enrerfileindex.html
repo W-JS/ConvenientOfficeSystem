@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="Commen/header::header(null)"></div>
+<body>
+
+<div class="ui bottom attached segment pushable">
+    <div class="ui visible inverted left vertical sidebar menu">
+        <a class="item" th:href="@{/EnreRFile/enreList}"> 新登记收文
+            <div class="ui label" th:text="${session.regFiles}"></div>
+        </a>
+
+        <a class="item" th:href="@{/EnreRFile/cenreList}"> 续登记收文
+            <div class="ui label" th:text="${session.CregFiles}"></div>
+        </a>
+        <a class="item" th:href="@{/EnreRFile/uicrRFileList}"> 录入收文
+            <div class="ui label" th:text="${session.uicrRFiles}"></div>
+        </a>
+
+        <a class="item" th:href="@{/EnreRFile/frmAuditRFileList}"> 审核收文
+            <div class="ui label" th:text="${session.frmAuditRFile}"></div>
+        </a>
+        <a class="item" th:href="@{/EnreRFile/frmDraftRFileList}"> 拟办收文
+            <div class="ui label" th:text="${session.frmDraftRFile}"></div>
+        </a>
+        <a class="item" th:href="@{/EnreRFile/frmAuthorizeRFileList}"> 批办收文
+            <div class="ui label" th:text="${session.frmAuthorizeRFile}"></div>
+        </a>
+        <a class="item" th:href="@{/EnreRFile/frmTransactRFileList}"> 承办收文
+            <div class="ui label" th:text="${session.frmTranPersonRFile}"></div>
+        </a>
+        <a class="item"> 送收文存档 </a>
+    </div>
+    <div class="pusher">
+        <div class="ui basic segment">
+            <h3 class="ui block header">
+                收文办理流程及内容
+            </h3>
+            <div class="ui two column centered grid">
+                <div class="column centered">
+
+                    <div class="ui shape">
+                        <div class="sides">
+                            <div class="active side">
+                                <div class="ui card">
+                                    <a class="image" href="#">
+                                        <img th:src="@{../images/wenjian.png}">
+                                    </a>
+                                    <div class="content">
+                                        <a class="header" href="#">新登记收文</a>
+                                        <div class="meta">
+                                            <a>流程第一步</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="side">
+                                <div class="ui card">
+                                    <a class="image" href="#">
+                                        <img th:src="@{../images/wenjian.png}">
+                                    </a>
+                                    <div class="content">
+                                        <a class="header" href="#">续登记收文</a>
+                                        <div class="meta">
+                                            <a>流程第一步</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="side">
+                                <div class="ui card">
+                                    <a class="image" href="#">
+                                        <img th:src="@{../images/wenjian.png}">
+                                    </a>
+                                    <div class="content">
+                                        <a class="header" href="#">录入收文</a>
+                                        <div class="meta">
+                                            <a>流程第一步</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="side">
+                                <div class="ui card">
+                                    <a class="image" href="#">
+                                        <img th:src="@{../images/wenjian.png}">
+                                    </a>
+                                    <div class="content">
+                                        <a class="header" href="#">审核收文</a>
+                                        <div class="meta">
+                                            <a>流程第一步</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="side">
+                                <div class="ui card">
+                                    <a class="image" href="#">
+                                        <img th:src="@{../images/wenjian.png}">
+                                    </a>
+                                    <div class="content">
+                                        <a class="header" href="#">拟办收文</a>
+                                        <div class="meta">
+                                            <a>流程第一步</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="side">
+                                <div class="ui card">
+                                    <a class="image" href="#">
+                                        <img th:src="@{../images/wenjian.png}">
+                                    </a>
+                                    <div class="content">
+                                        <a class="header" href="#">批办收文</a>
+                                        <div class="meta">
+                                            <a>流程第一步</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="side">
+                                <div class="ui card">
+                                    <a class="image" href="#">
+                                        <img th:src="@{../images/wenjian.png}">
+                                    </a>
+                                    <div class="content">
+                                        <a class="header" href="#">承办收文</a>
+                                        <div class="meta">
+                                            <a>流程第一步</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="side">
+                                <div class="ui card">
+                                    <a class="image" href="#">
+                                        <img th:src="@{../images/wenjian.png}">
+                                    </a>
+                                    <div class="content">
+                                        <a class="header" href="#">送收文存档</a>
+                                        <div class="meta">
+                                            <a>流程第一步</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column centered row">
+                    <div class="column">
+                        <div class="ui ignored icon direction buttons">
+                            <div id="left" class="ui button" data-animation="flip" data-direction="left" title="Flip Left"><i class="left long arrow icon"></i></div>
+                            <div id="up" class="ui button" data-animation="flip" data-direction="up" title="Flip Up"><i class="up long arrow icon"></i></div>
+                            <div id="down" class="ui icon button" data-animation="flip" title="Flip Down" data-direction="down"><i class="down long arrow icon"></i></div>
+                            <div id="right" class="ui icon button" data-animation="flip" data-direction="right" title="Flip Right"><i class="right long arrow icon"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+</div>
+<script>
+    $(function (){
+        $('.shape').shape();
+        var left= $('#left');
+        var up= $('#up');
+        var down= $('#down');
+        var right= $('#right');
+
+        left.click(function (){
+            $('.shape').shape('flip left');
+        })
+
+        up.click(function (){
+            $('.shape').shape('flip up');
+        })
+        down.click(function (){
+            $('.shape').shape('flip down');
+        })
+        right.click(function (){
+            $('.shape').shape('flip right');
+        })
+
+    })
+
+</script>
+
+</body>
+<div th:replace="Commen/footer::footer"></div>
+</html>

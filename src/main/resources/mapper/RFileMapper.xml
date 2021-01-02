@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.huat.mapper.RFileMapper" >
+  <resultMap id="BaseResultMap" type="cn.huat.pojo.RFile" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="fileNo" property="fileno" jdbcType="VARCHAR" />
+    <result column="fileCaption" property="filecaption" jdbcType="VARCHAR" />
+    <result column="keyWord" property="keyword" jdbcType="VARCHAR" />
+    <result column="affixCaption" property="affixcaption" jdbcType="VARCHAR" />
+    <result column="mainTo" property="mainto" jdbcType="INTEGER" />
+    <result column="CC" property="cc" jdbcType="VARCHAR" />
+    <result column="confidential" property="confidential" jdbcType="VARCHAR" />
+    <result column="express" property="express" jdbcType="VARCHAR" />
+    <result column="fileContent" property="filecontent" jdbcType="VARCHAR" />
+    <result column="affixContent" property="affixcontent" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, fileNo, fileCaption, keyWord, affixCaption, mainTo, CC, confidential, express, 
+    fileContent, affixContent
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from RFile
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByFileNo" resultType="java.lang.String">
+    select  fileNo from EnreRFile
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from RFile
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.huat.pojo.RFile" >
+    insert into RFile (id, fileNo, fileCaption, 
+      keyWord, affixCaption, mainTo, 
+      CC, confidential, express, 
+      fileContent, affixContent)
+    values (#{id,jdbcType=VARCHAR}, #{fileno,jdbcType=VARCHAR}, #{filecaption,jdbcType=VARCHAR}, 
+      #{keyword,jdbcType=VARCHAR}, #{affixcaption,jdbcType=VARCHAR}, #{mainto,jdbcType=INTEGER}, 
+      #{cc,jdbcType=VARCHAR}, #{confidential,jdbcType=VARCHAR}, #{express,jdbcType=VARCHAR}, 
+      #{filecontent,jdbcType=VARCHAR}, #{affixcontent,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.huat.pojo.RFile" >
+    insert into RFile
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="fileno != null" >
+        fileNo,
+      </if>
+      <if test="filecaption != null" >
+        fileCaption,
+      </if>
+      <if test="keyword != null" >
+        keyWord,
+      </if>
+      <if test="affixcaption != null" >
+        affixCaption,
+      </if>
+      <if test="mainto != null" >
+        mainTo,
+      </if>
+      <if test="cc != null" >
+        CC,
+      </if>
+      <if test="confidential != null" >
+        confidential,
+      </if>
+      <if test="express != null" >
+        express,
+      </if>
+      <if test="filecontent != null" >
+        fileContent,
+      </if>
+      <if test="affixcontent != null" >
+        affixContent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="fileno != null" >
+        #{fileno,jdbcType=VARCHAR},
+      </if>
+      <if test="filecaption != null" >
+        #{filecaption,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="affixcaption != null" >
+        #{affixcaption,jdbcType=VARCHAR},
+      </if>
+      <if test="mainto != null" >
+        #{mainto,jdbcType=INTEGER},
+      </if>
+      <if test="cc != null" >
+        #{cc,jdbcType=VARCHAR},
+      </if>
+      <if test="confidential != null" >
+        #{confidential,jdbcType=VARCHAR},
+      </if>
+      <if test="express != null" >
+        #{express,jdbcType=VARCHAR},
+      </if>
+      <if test="filecontent != null" >
+        #{filecontent,jdbcType=VARCHAR},
+      </if>
+      <if test="affixcontent != null" >
+        #{affixcontent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.huat.pojo.RFile" >
+    update RFile
+    <set >
+      <if test="fileno != null" >
+        fileNo = #{fileno,jdbcType=VARCHAR},
+      </if>
+      <if test="filecaption != null" >
+        fileCaption = #{filecaption,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        keyWord = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="affixcaption != null" >
+        affixCaption = #{affixcaption,jdbcType=VARCHAR},
+      </if>
+      <if test="mainto != null" >
+        mainTo = #{mainto,jdbcType=INTEGER},
+      </if>
+      <if test="cc != null" >
+        CC = #{cc,jdbcType=VARCHAR},
+      </if>
+      <if test="confidential != null" >
+        confidential = #{confidential,jdbcType=VARCHAR},
+      </if>
+      <if test="express != null" >
+        express = #{express,jdbcType=VARCHAR},
+      </if>
+      <if test="filecontent != null" >
+        fileContent = #{filecontent,jdbcType=VARCHAR},
+      </if>
+      <if test="affixcontent != null" >
+        affixContent = #{affixcontent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.huat.pojo.RFile" >
+    update RFile
+    set fileNo = #{fileno,jdbcType=VARCHAR},
+      fileCaption = #{filecaption,jdbcType=VARCHAR},
+      keyWord = #{keyword,jdbcType=VARCHAR},
+      affixCaption = #{affixcaption,jdbcType=VARCHAR},
+      mainTo = #{mainto,jdbcType=INTEGER},
+      CC = #{cc,jdbcType=VARCHAR},
+      confidential = #{confidential,jdbcType=VARCHAR},
+      express = #{express,jdbcType=VARCHAR},
+      fileContent = #{filecontent,jdbcType=VARCHAR},
+      affixContent = #{affixcontent,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="findAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from RFile
+  </select>
+
+  <select id="selectFileByFileNo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from RFile where fileNo = #{fileno, jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectRFileByFileNo" resultType="cn.huat.pojo.RFile" parameterType="java.lang.String">
+    select * from RFile where fileNo = #{fileno}
+  </select>
+
+</mapper>

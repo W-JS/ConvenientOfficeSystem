@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="Commen/header::header(null)"></div>
+<body>
+
+<div class="ui container">
+    <form class="ui form segment"  method="post" id="rfile" th:action="@{/EnreRFile/cfrmenrerfile}">
+        <p>收文登记</p>
+        <div class="four fields">
+            <div class="field">
+                <label>收文日期</label>
+                <input placeholder="收文日期" name="receivedate" th:value="${file.receivedate}" th:readonly="readonly">
+            </div>
+            <div class="field">
+                <label>来文单位</label>
+                <input placeholder="来文单位" name="senderorgan" type="text" th:readonly="readonly" th:value="${file.senderorgan}">
+            </div>
+            <div class="field">
+                <label>文号</label>
+                <input placeholder="文号" name="fileno" type="text" th:readonly="readonly" th:value="${file.fileno}">
+            </div>
+            <div class="field">
+                <label>文件标题</label>
+                <input placeholder="文件标题" name="filecaption" type="text" th:readonly="readonly" th:value="${file.filecaption}">
+            </div>
+        </div>
+        <div class="four fields">
+            <div class="field">
+                <label>主题词</label>
+                <input placeholder="主题词" name="keyword" type="text" readonly="readonly" th:value="${file.keyword}">
+            </div>
+            <div class="field">
+                <label>有无附件</label>
+                <input placeholder="有无附件" name="haveaffix" type="text" readonly="readonly" th:value="${file.haveaffix}">
+            </div>
+            <div class="field">
+                <label>密级</label>
+                <input placeholder="密级" name="confidential" type="text" readonly="readonly" th:value="${file.confidential}">
+            </div>
+            <div class="field">
+                <label>速级</label>
+                <input placeholder="速级" name="express" type="text" readonly="readonly" th:value="${file.express}">
+            </div>
+
+        </div>
+        <div class="three fields">
+            <div class="field">
+                <label>份数</label>
+                <input placeholder="份数" name="copies" type="text" readonly="readonly" th:value="${file.copies}">
+            </div>
+            <div class="field">
+                <label>签收人</label>
+<!--                <input placeholder="签收人" name="receiver" type="text" readonly="readonly" th:value="${file.receiver}">-->
+                <select name="receiver" style="pointer-events: none;">
+                    <option th:selected="${file.recorder eq man.account}"
+                            th:each="man:${person}" th:value="${man.account}" th:text="${man.name}"></option>
+                </select>
+            </div>
+            <div class="field"  hidden="hidden">
+                <label>状态</label>
+                <input placeholder="状态" name="state"type="text" id="state" readonly="readonly">
+            </div>
+        </div>
+        <div class="five fields">
+            <div class="field">
+                <label>录入员</label>
+<!--                <input placeholder="录入员" name="recorder" type="text" th:value="${file.recorder}">-->
+
+<!--                测试-->
+                <select name="recorder" >
+                    <option th:selected="${file.recorder eq man.account}"
+                            th:each="man:${person}" th:value="${man.account}" th:text="${man.name}"></option>
+                </select>
+            </div>
+            <div class="field">
+                <label>审核人</label>
+                <input placeholder="审核人" name="auditor" type="text" readonly="readonly">
+<!--                <select name="auditor" >-->
+<!--                    <option th:selected="${file.auditor eq man.account}"-->
+<!--                            th:each="man:${person}" th:value="${man.account}" th:text="${man.name}"></option>-->
+<!--                </select>-->
+            </div>
+            <div class="field">
+                <label>审核</label>
+                <input placeholder="审核" name="auditing" type="text" th:value="${file.auditing}" readonly="readonly">
+            </div>
+            <div class="field">
+                <label>拟办人</label>
+                <input placeholder="拟办人" name="draftsman" type="text" readonly="readonly">
+<!--                <select name="draftsman" >-->
+<!--                    <option th:selected="${file.draftsman eq man.account}"-->
+<!--                            th:each="man:${person}" th:value="${man.account}" th:text="${man.name}"></option>-->
+<!--                </select>-->
+            </div>
+            <div class="field">
+                <label>拟办</label>
+                <input placeholder="拟办" name="drafting" type="text" th:value="${file.drafting}" readonly="readonly">
+            </div>
+        </div>
+        <div class="five fields">
+            <div class="field">
+                <label>批办人</label>
+                <input placeholder="批办人"  name="authorizeman" type="text" readonly="readonly">
+<!--                <select name="authorizeman" >-->
+<!--                    <option th:selected="${file.authorizeman eq man.account}"-->
+<!--                            th:each="man:${person}" th:value="${man.account}" th:text="${man.name}"></option>-->
+<!--                </select>-->
+            </div>
+            <div class="field">
+                <label>批办</label>
+                <input placeholder="批办" name="authorizing" type="text" th:value="${file.authorizing}" readonly="readonly">
+            </div>
+            <div class="field">
+                <label>承办人</label>
+                <input placeholder="承办人" name="tranperson" type="text" readonly="readonly">
+<!--                <select name="tranperson" >-->
+<!--                    <option th:selected="${file.tranperson eq man.account}"-->
+<!--                            th:each="man:${person}" th:value="${man.account}" th:text="${man.name}"></option>-->
+<!--                </select>-->
+            </div>
+            <div class="field">
+                <label>承办</label>
+                <input placeholder="承办" name="transacting" type="text" th:value="${file.transacting}" readonly="readonly">
+            </div>
+            <div class="field">
+                <label>备注</label>
+                <input placeholder="备注" name="remark" type="text" th:value="${file.remark}">
+            </div>
+        </div>
+        <input  hidden="hidden" th:value="${file.id}" name="id">
+
+        <button id="complete" class="ui primary submit button"  type="submit" onclick="toComplete()">完成</button>
+        <button id="save" class="ui primary submit button"  type="submit" onclick="toSave()">保存</button>
+        <a id="cancel" class="ui  button" th:href="@{/EnreRFile/cenreList}" >取消</a>
+    </form>
+</div>
+
+
+<script>
+    $(function (){
+
+    })
+    function toComplete(){
+        $('#state').val("1")
+    }
+    function toSave(){
+        $('#state').val("0")
+    }
+
+
+
+</script>
+</body>
+<div th:replace="Commen/footer::footer"></div>
+</html>

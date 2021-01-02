@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="Commen/header::header(null)"></div>
+<body>
+
+<div class="ui bottom attached segment pushable">
+    <div class="ui visible inverted left vertical sidebar menu">
+        <a class="item" th:href="@{/apl/appform/{user}/(user=${session.user})}"> 新建会议安排表单
+        </a>
+
+        <a class="item" th:href="@{/apl/find/{user}/(user=${session.user})}"> 查询并修改会议安排表单
+        </a>
+        <a class="item" th:href="@{/apl/reviewfind/{user}/(user=${session.user})}"> 审核会议安排表单
+        </a>
+
+        <a class="item" th:href="@{/att/noti/{user}/(user=${session.user})}"> 通知会议安排表单
+        </a>
+        <a class="item" th:href="@{/minute/minutelist/{user}(user=${session.user})}"> 会议记录表单
+        </a>
+        <a class="item" th:href="@{/minute/minuteviewlist/{user}(user=${session.user})}"> 查看会议纪要
+        </a>
+
+    </div>
+    <div class="pusher">
+        <div class="ui basic segment">
+            <h3 class="ui block header">
+                收文办理流程及内容
+            </h3>
+            <div class="ui two column centered grid">
+                <div class="column centered">
+
+                    <div class="ui shape">
+                        <div class="sides">
+                            <div class="active side">
+                                <div class="ui card">
+                                    <a class="image" href="#">
+                                        <img th:src="@{../images/wenjian.png}">
+                                    </a>
+                                    <div class="content">
+                                        <a class="header" href="#">新建会议安排表单</a>
+                                        <div class="meta">
+                                            <a>流程第一步</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="side">
+                                <div class="ui card">
+                                    <a class="image" href="#">
+                                        <img th:src="@{../images/wenjian.png}">
+                                    </a>
+                                    <div class="content">
+                                        <a class="header" href="#">查询并修改会议安排表单</a>
+                                        <div class="meta">
+                                            <a>流程第一步</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="side">
+                                <div class="ui card">
+                                    <a class="image" href="#">
+                                        <img th:src="@{../images/wenjian.png}">
+                                    </a>
+                                    <div class="content">
+                                        <a class="header" href="#">审核会议安排表单</a>
+                                        <div class="meta">
+                                            <a>流程第一步</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="side">
+                                <div class="ui card">
+                                    <a class="image" href="#">
+                                        <img th:src="@{../images/wenjian.png}">
+                                    </a>
+                                    <div class="content">
+                                        <a class="header" href="#">通知会议安排表单</a>
+                                        <div class="meta">
+                                            <a>流程第一步</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="side">
+                                <div class="ui card">
+                                    <a class="image" href="#">
+                                        <img th:src="@{../images/wenjian.png}">
+                                    </a>
+                                    <div class="content">
+                                        <a class="header" href="#">会议记录表单</a>
+                                        <div class="meta">
+                                            <a>流程第一步</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="side">
+                                <div class="ui card">
+                                    <a class="image" href="#">
+                                        <img th:src="@{../images/wenjian.png}">
+                                    </a>
+                                    <div class="content">
+                                        <a class="header" href="#">查看会议纪要</a>
+                                        <div class="meta">
+                                            <a>流程第一步</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column centered row">
+                    <div class="column">
+                        <div class="ui ignored icon direction buttons">
+                            <div id="left" class="ui button" data-animation="flip" data-direction="left" title="Flip Left"><i class="left long arrow icon"></i></div>
+                            <div id="up" class="ui button" data-animation="flip" data-direction="up" title="Flip Up"><i class="up long arrow icon"></i></div>
+                            <div id="down" class="ui icon button" data-animation="flip" title="Flip Down" data-direction="down"><i class="down long arrow icon"></i></div>
+                            <div id="right" class="ui icon button" data-animation="flip" data-direction="right" title="Flip Right"><i class="right long arrow icon"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+</div>
+<script>
+    $(function (){
+        $('.shape').shape();
+        var left= $('#left');
+        var up= $('#up');
+        var down= $('#down');
+        var right= $('#right');
+
+        left.click(function (){
+            $('.shape').shape('flip left');
+        })
+
+        up.click(function (){
+            $('.shape').shape('flip up');
+        })
+        down.click(function (){
+            $('.shape').shape('flip down');
+        })
+        right.click(function (){
+            $('.shape').shape('flip right');
+        })
+
+    })
+
+</script>
+
+</body>
+<div th:replace="Commen/footer::footer"></div>
+</html>

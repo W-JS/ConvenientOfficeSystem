@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+    <!--改动-->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script th:src="@{/js/BsMultiSelect.js}"></script>
+</head>
+<body>
+<header >
+    <nav class="navbar navbar-dark" role="navigation" style="background-color: #2bbbff ">
+        <div class="container" >
+            <div >
+                <h2 class="container-fluid">协同办公系统</h2>
+                <a href="/ConvenientOfficeSystem/user/SendFileIndex" class=" "><i class=""></i>发文办理</a>&nbsp;&nbsp;&nbsp;
+                <a href="/ConvenientOfficeSystem/EnreRFile/toRFileindex" class=" "><i class=""></i>收文办理</a>&nbsp;&nbsp;&nbsp;
+                <a href="#" class="m-item item m-mobile-hide"><i class=" "></i>会议管理</a>&nbsp;&nbsp;&nbsp;
+                <a href="/ConvenientOfficeSystem/archive/index" class=" "><i class=" "></i>档案管理</a>&nbsp;&nbsp;&nbsp;
+                <a th:href="@{/notice/noticeIndex}" class=" "><i class=" "></i>公告管理</a>&nbsp;&nbsp;&nbsp;
+                <a href="#" class="m-item item m-mobile-hide"><i class=" "></i>个人助理</a>&nbsp;&nbsp;&nbsp;
+                <a href="/ConvenientOfficeSystem/user/manager" class=" "><i class=" "></i>系统管理</a>&nbsp;&nbsp;&nbsp;
+                <a href="/ConvenientOfficeSystem/user/logout" class="pull-right">注销</a>&nbsp;&nbsp;&nbsp;
+            </div>
+        </div>
+        <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+            <i class="sidebar icon"></i>
+        </a>
+    </nav>
+</header>
+<h1>登记发文表</h1>
+<main >
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <form method="post" th:action="@{/enreSFile/add/{account}/{target}(account=${account},target=5)}"
+                  onsubmit="checkForm()" class="m-auto">
+                <input type="hidden" name="bid" value="1">
+                <input type="hidden" name="title" id="title" value="">
+                <input th:value="${sfile.getFileno()}" type="hidden" name="id" id="id" class="form-control"
+                       placeholder="主键">
+                <div class="form-group col-md-6 col-sm-6">
+                    <label for="fileno" class="col-sm-4 control-label">文号</label>
+                    <div class="col-sm-8">
+                        <input th:value="${sfile.getFileno()}" type="text" name="fileno" id="fileno"
+                               class="form-control"
+                               placeholder="文号" th:readonly="ture">
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label for="filecaption" class="col-sm-4 control-label">文件标题</label>
+                    <div class="col-sm-8">
+                        <input th:value="${sfile.getFilecaption()}" name="filecaption" type="text" value=""
+                               required="required" class="form-control"
+                               id="filecaption" placeholder="文件标题" th:readonly="ture">
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label for="keyword" class="col-sm-4 control-label">主题词</label>
+                    <div class="col-sm-8">
+                        <input th:value="${sfile.getKeyword()}" name="keyword" type="text" value="" required="required"
+                               class="form-control"
+                               id="keyword" placeholder="主题词" th:readonly="ture">
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label for="senddate" class="col-sm-4 control-label">发文日期</label>
+                    <div class="col-sm-8">
+                        <input th:value="${#dates.format(sfile.getCloseingdate(),'yyyy-mm-dd hh:mm:ss')}"
+                               name="closeingdate" type="text" value=""
+                               required="required" class="form-control"
+                               id="senddate" placeholder="发文日期" th:readonly="ture">
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label class="col-sm-4 control-label">收件单位</label>
+                    <input name="receiverorgan" id="receiverorgan" hidden>
+                    <div class="col-sm-8">
+                        <select class="form-control" name="receiverorgan1" id="receiverorgan1" multiple="multiple" style="display: none;">
+                            <option th:each="dept:${depts}" th:text="${dept.getDepartmentName()}"
+                                    th:value="${dept.getDepartmentName()}" ></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label for="copies" class="col-sm-4 control-label">附件</label>
+                    <div class="col-sm-8">
+                        <input th:value="( (${sfile.getAffixcaption().length()} ne 0)? '有' : '无')" name="haveaffix"
+                               id="haveaffix" type="text" value="" class="form-control" th:readonly="ture">
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label for="copies" class="col-sm-4 control-label">密级</label>
+                    <div class="col-sm-8">
+                        <input th:value="${sfile.getConfidential()}" name="confidential" type="text" value=""
+                               required="required" class="form-control"
+                               id="confidential" placeholder="密级" th:readonly="ture">
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label for="copies" class="col-sm-4 control-label">速级</label>
+                    <div class="col-sm-8">
+                        <input th:value="${sfile.getExpress()}" name="express" type="text" value="" required="required"
+                               class="form-control"
+                               id="express" placeholder="速级" th:readonly="ture">
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label for="copies" class="col-sm-4 control-label">份数</label>
+                    <div class="col-sm-8">
+                        <input th:value="${sfile.getCopies()}" name="copies" type="text" value="" required="required"
+                               class="form-control"
+                               id="copies" placeholder="份数" th:readonly="ture">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        <a class="btn btn-small pull-right btn-danger" th:href="@{/user/SendFileIndex}" >退出</a>
+                        <button id="abv" type="submit" name="submit" class="btn btn-small pull-right tb  btn-success" onclick="query()">提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+<script>
+    $("select").bsMultiSelect({
+        selectedPanelDefMinHeight: 'calc(2.25rem + 2px)',
+        selectedPanelLgMinHeight: 'calc(2.875rem + 2px)',
+        selectedPanelSmMinHeight: 'calc(1.8125rem + 2px)',
+        selectedPanelDisabledBackgroundColor: '#e9ecef',
+        selectedPanelFocusBorderColor: '#80bdff',
+        selectedPanelFocusBoxShadow: '0 0 0 0.2rem rgba(0, 123, 255, 0.25)',
+        selectedPanelFocusValidBoxShadow: '0 0 0 0.2rem rgba(40, 167, 69, 0.25)',
+        selectedPanelFocusInvalidBoxShadow: '0 0 0 0.2rem rgba(220, 53, 69, 0.25)',
+        filterInputColor: '#495057',
+        selectedItemContentDisabledOpacity: '.65',
+        dropdDownLabelDisabledColor: '#6c757d',
+        containerClass: 'dashboardcode-bsmultiselect',
+        dropDownMenuClass: 'dropdown-menu',
+        dropDownItemClass: 'px-2',
+        dropDownItemHoverClass: 'text-primary bg-light',
+        selectedPanelClass: 'form-control',
+        selectedItemClass: 'badge',
+        removeSelectedItemButtonClass: 'close',
+        filterInputItemClass: '',
+        filterInputClass: ''
+    });
+</script>
+<!--<input type="button" id="abv" value="测试用按钮"/>-->
+<script type="text/javascript">
+
+    // $(function(){
+    function query() {
+
+        // $("#abv").click(function(){
+            var selected = '';
+
+            $("option:selected").each(function(){
+
+                selected +='|'+ $(this).text() ;
+            });
+            console.log(selected);
+             // document.getElementById('receiverorgan').val=selected;
+             alert(selected)
+            $('#receiverorgan').val(selected);
+        };
+        // );
+    // };
+    // });
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.huat.mapper.EnreSFlieMapper" >
+  <resultMap id="BaseResultMap" type="cn.huat.pojo.EnreSFlie" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="fileNo" property="fileno" jdbcType="VARCHAR" />
+    <result column="fileCaption" property="filecaption" jdbcType="VARCHAR" />
+    <result column="keyWord" property="keyword" jdbcType="VARCHAR" />
+    <result column="sendDate" property="senddate" jdbcType="TIMESTAMP" />
+    <result column="receiverOrgan" property="receiverorgan" jdbcType="VARCHAR" />
+    <result column="receiver" property="receiver" jdbcType="INTEGER" />
+    <result column="haveAffix" property="haveaffix" jdbcType="VARCHAR" />
+    <result column="confidential" property="confidential" jdbcType="VARCHAR" />
+    <result column="express" property="express" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, fileNo, fileCaption, keyWord, sendDate, receiverOrgan, receiver, haveAffix, confidential, 
+    express
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from EnreSFlie
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from EnreSFlie
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.huat.pojo.EnreSFlie" >
+    insert into EnreSFile (id, fileNo, fileCaption,
+      keyWord, sendDate, receiverOrgan, 
+      receiver, haveAffix, confidential, 
+      express)
+    values (#{id,jdbcType=VARCHAR}, #{fileno,jdbcType=VARCHAR}, #{filecaption,jdbcType=VARCHAR}, 
+      #{keyword,jdbcType=VARCHAR}, current_timestamp, #{receiverorgan,jdbcType=VARCHAR},
+      #{receiver,jdbcType=INTEGER}, #{haveaffix,jdbcType=VARCHAR}, #{confidential,jdbcType=VARCHAR}, 
+      #{express,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.huat.pojo.EnreSFlie" >
+    insert into EnreSFlie
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="fileno != null" >
+        fileNo,
+      </if>
+      <if test="filecaption != null" >
+        fileCaption,
+      </if>
+      <if test="keyword != null" >
+        keyWord,
+      </if>
+      <if test="senddate != null" >
+        sendDate,
+      </if>
+      <if test="receiverorgan != null" >
+        receiverOrgan,
+      </if>
+      <if test="receiver != null" >
+        receiver,
+      </if>
+      <if test="haveaffix != null" >
+        haveAffix,
+      </if>
+      <if test="confidential != null" >
+        confidential,
+      </if>
+      <if test="express != null" >
+        express,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="fileno != null" >
+        #{fileno,jdbcType=VARCHAR},
+      </if>
+      <if test="filecaption != null" >
+        #{filecaption,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="senddate != null" >
+        #{senddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiverorgan != null" >
+        #{receiverorgan,jdbcType=VARCHAR},
+      </if>
+      <if test="receiver != null" >
+        #{receiver,jdbcType=INTEGER},
+      </if>
+      <if test="haveaffix != null" >
+        #{haveaffix,jdbcType=VARCHAR},
+      </if>
+      <if test="confidential != null" >
+        #{confidential,jdbcType=VARCHAR},
+      </if>
+      <if test="express != null" >
+        #{express,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+    <insert id="addEnreSFile">
+       insert into EnreSFlie (id, fileNo, fileCaption,
+      keyWord, sendDate, receiverOrgan,
+      receiver, haveAffix, confidential,
+      express)
+    values (#{id,jdbcType=VARCHAR}, #{fileno,jdbcType=VARCHAR}, #{filecaption,jdbcType=VARCHAR},
+      #{keyword,jdbcType=VARCHAR}, #{senddate,jdbcType=TIMESTAMP}, #{receiverorgan,jdbcType=VARCHAR},
+      #{receiver,jdbcType=INTEGER}, #{haveaffix,jdbcType=VARCHAR}, #{confidential,jdbcType=VARCHAR},
+      #{express,jdbcType=VARCHAR})
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.huat.pojo.EnreSFlie" >
+    update EnreSFlie
+    <set >
+      <if test="fileno != null" >
+        fileNo = #{fileno,jdbcType=VARCHAR},
+      </if>
+      <if test="filecaption != null" >
+        fileCaption = #{filecaption,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        keyWord = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="senddate != null" >
+        sendDate = #{senddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receiverorgan != null" >
+        receiverOrgan = #{receiverorgan,jdbcType=VARCHAR},
+      </if>
+      <if test="receiver != null" >
+        receiver = #{receiver,jdbcType=INTEGER},
+      </if>
+      <if test="haveaffix != null" >
+        haveAffix = #{haveaffix,jdbcType=VARCHAR},
+      </if>
+      <if test="confidential != null" >
+        confidential = #{confidential,jdbcType=VARCHAR},
+      </if>
+      <if test="express != null" >
+        express = #{express,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.huat.pojo.EnreSFlie" >
+    update EnreSFlie
+    set fileNo = #{fileno,jdbcType=VARCHAR},
+      fileCaption = #{filecaption,jdbcType=VARCHAR},
+      keyWord = #{keyword,jdbcType=VARCHAR},
+      sendDate = #{senddate,jdbcType=TIMESTAMP},
+      receiverOrgan = #{receiverorgan,jdbcType=VARCHAR},
+      receiver = #{receiver,jdbcType=INTEGER},
+      haveAffix = #{haveaffix,jdbcType=VARCHAR},
+      confidential = #{confidential,jdbcType=VARCHAR},
+      express = #{express,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <!--邵传中-->
+  <select id="selectReceiverByFileNo" resultType="java.lang.Integer"  parameterType="java.lang.String">
+    select  receiver from EnreSFile where fileno = #{fileNo}
+  </select>
+
+  <select id="selectAffixByFileNo" resultType="java.lang.String"  parameterType="java.lang.String">
+     select  haveAffix from EnreSFile where fileno = #{fileNo}
+  </select>
+
+  <select id="selectByReceiver" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from EnreSFile where receiver = #{receiver}
+  </select>
+</mapper>

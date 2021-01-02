@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>SFileInfo</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 可选的Bootstrap主题文件（一般不使用） -->
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap-theme.min.css"></script>
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+    <script>
+        function submitSFile(m) {
+            if (m == 1) {
+                document.getElementById("iptMember").value = parseInt(document.getElementById("iptMember").value) + 1;
+                document.getElementById("State").value = '';
+            }
+            ;
+            if (m == 0) {
+                document.getElementById("iptMember").value = parseInt(document.getElementById("iptMember").value);
+                document.getElementById("State").value = '';
+
+            }
+            ;
+            if (m == -1) {
+                document.getElementById("iptMember").value = parseInt(document.getElementById("iptMember").value) - 1;
+                document.getElementById("State").value = "退回";
+            }
+            ;
+            let url1 = '/ConvenientOfficeSystem/sfile/updateSFile/';
+            console.log(url1);
+            let url2 = '/ConvenientOfficeSystem/sfile/findAll/' + document.getElementById("account").value + '/' + document.getElementById("target").value;
+            console.log(url2);
+
+            var content1 = tinymce.get('filecontent').getContent();
+            var content2 = tinymce.get('affixcontent').getContent();
+            $('#filecontent1').val(content1);
+            $('#affixcontent1').val(content2);
+            console.log(content1);
+            console.log(content2);
+            $.ajax({
+                type: 'POST',
+                datatype: 'text',
+                url: url1,
+                data: $("#SFileForm").serializeArray(),
+                success: function (data) {
+                    console.log(data);
+                    // if ("success" == data) {
+                    location.href = url2;
+                    // }
+
+                },
+                error: function (data) {
+                    alert("error:" + data.responseText);
+                }
+            });
+        };
+
+    </script>
+</head>
+<body>
+<div th:replace="Commen/header::header(null)"></div>
+<h1>发文更新</h1>
+<main>
+    <input th:id="account" th:value="${account}" hidden>
+    <input th:id="target" th:value="${target}" hidden>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            <!--        <form method="post" th:action="@{/sfile/updateSFile/{account}/{target}(account=${account},target=${target})}">-->
+
+            <form th:id="SFileForm">
+                <!--            <input type="hidden" th:value="${SFILE.getDraftno()}" name="draftno" class="form-control" id="draftno"-->
+                <!--                   placeholder="草拟文序号">-->
+
+                <div class="form-group col-md-6 col-sm-6">
+                    <label for="filecaption" class="col-sm-4 control-label">文件标题</label>
+                    <div class="col-sm-8" th:switch="${target} eq 1">
+                        <div th:case="true">
+                            <input th:value="${SFILE.getFilecaption()}" name="filecaption" type="text" value=""
+                                   class="form-control"
+                                   id="filecaption" placeholder="文件标题">
+                        </div>
+                        <div th:case="false">
+                            <input th:value="${SFILE.getFilecaption()}" name="filecaption" type="text" value=""
+                                   class="form-control"
+                                   id="filecaption1" placeholder="文件标题" th:readonly="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label for="keyword" class="col-sm-4 control-label">主题词</label>
+                    <div class="col-sm-8" th:switch="${target} eq 1">
+                        <div th:case="true">
+                            <input th:value="${SFILE.getKeyword()}" name="keyword" type="text" value=""
+                                   class="form-control"
+                                   id="keyword" placeholder="主题词">
+                        </div>
+                        <div th:case="false">
+                            <input th:value="${SFILE.getKeyword()}" name="keyword" type="text" value=""
+                                   class="form-control"
+                                   id="keyword1" placeholder="主题词" th:readonly="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label for="affixcaption" class="col-sm-4 control-label">附件标题</label>
+                    <div class="col-sm-8" th:switch="${target} eq 1">
+                        <div th:case="true">
+                            <input th:value="${SFILE.getAffixcaption()}" name="affixcaption" type="text" value=""
+                                   class="form-control"
+                                   id="affixcaption" placeholder="附件标题">
+                        </div>
+                        <div th:case="false">
+                            <input th:value="${SFILE.getAffixcaption()}" name="affixcaption" type="text" value=""
+                                   class="form-control"
+                                   id="affixcaption1" placeholder="附件标题" th:readonly="true">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label for="copies" class="col-sm-4 control-label">份数</label>
+                    <div class="col-sm-8" th:switch="${target} eq 1">
+                        <div th:case="true">
+                            <input th:value="${SFILE.getCopies()}" name="copies" type="text" value=""
+                                   class="form-control"
+                                   id="copies" placeholder="份数">
+                        </div>
+                        <div th:case="false">
+                            <input th:value="${SFILE.getCopies()}" name="copies" type="text" value=""
+                                   class="form-control"
+                                   id="copies1" placeholder="份数" th:readonly="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label class="col-sm-4 control-label">主送</label>
+                    <div class="col-sm-8" th:switch="${target} eq 1">
+                        <div th:case="true">
+                            <select class="form-control" name="mainto">
+                                <option th:selected="${User eq SFILE.getMainto()}" th:text="${user.getName()}"
+                                        th:each="user:${User}"
+                                        th:value="${user.getAccount()}"></option>
+                            </select>
+                        </div>
+                        <div th:case="false">
+                            <input th:value="${SFILE.getMainto()}" name="mainto" type="text" value=""
+                                   class="form-control"
+                                   id="mainto1" placeholder="主送" th:readonly="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label class="col-sm-4 control-label">抄送</label>
+                    <div class="col-sm-8" th:switch="${target} eq 1">
+                        <div th:case="true">
+                            <select class="form-control" name="cc">
+                                <option th:selected="${User eq SFILE.getCc()}" th:text="${user.getName()}"
+                                        th:each="user:${User}"
+                                        th:value="${user.getAccount()}"></option>
+                            </select>
+                        </div>
+                        <div th:case="false">
+                            <input th:value="${SFILE.getCc()}" name="cc" type="text" value="" class="form-control"
+                                   id="cc1" placeholder="抄送" th:readonly="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label class="col-sm-4 control-label">密级</label>
+                    <div class="col-sm-8" th:switch="${target} eq 1">
+                        <div th:case="true">
+                            <select class="form-control" name="confidential">
+                                <option value="绝对机密">绝对机密</option>
+                                <option value="极机密">极机密</option>
+                                <option value="机密">机密</option>
+                                <option value="密">密</option>
+                                <option value="普通">普通</option>
+                            </select>
+                        </div>
+                        <div th:case="false">
+                            <input th:value="${SFILE.getConfidential()}" name="confidential" type="text" value=""
+                                   class="form-control"
+                                   id="confidential1" placeholder="密级" th:readonly="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label class="col-sm-4 control-label">速级</label>
+                    <div class="col-sm-8" th:switch="${target} eq 1">
+                        <div th:case="true">
+                            <select class="form-control" name="express">
+                                <option value="限时送">限时送</option>
+                                <option value="特快送">特快送</option>
+                                <option value="快件">快件</option>
+                                <option value="普通">普通</option>
+                            </select>
+                        </div>
+                        <div th:case="false">
+                            <input th:value="${SFILE.getExpress()}" name="express" type="text" value=""
+                                   class="form-control"
+                                   id="express" placeholder="速级" th:readonly="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label for="filecontent" class="col-sm-2 control-label">正文</label>
+                    <div class="col-sm-10" >
+                        <textarea class="form-control" rows="3" id="filecontent"
+                                  th:required="ture" maxlength="5000" th:text="${SFILE.getFilecontent()}"></textarea>
+                    </div>
+                </div>
+                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label for="affixcontent" class="col-sm-2 control-label">附件内容</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="3" id="affixcontent"
+                                  maxlength="5000" th:text="${SFILE.getAffixcontent()}"></textarea>
+                    </div>
+                </div>
+                <!--                    <script src="https://www.layuicdn.com/layui/layui.js" charset="utf-8"></script>-->
+                <input name="affixcontent" id="affixcontent1" hidden>
+                <input name="filecontent" id="filecontent1" hidden>
+                <input th:value="${SFILE.getDraftsman()}" th:name="draftsman" hidden>
+                <input th:value="${SFILE.getDraftno()}" th:name="draftno" hidden>
+                <input th:value="${SFILE.getFileno()}" th:name="fileno" hidden>
+                <input th:value="${SFILE.getDraftdate()}" th:name="draftdate" hidden>
+                <input th:value="${SFILE.getCloseingdate()}" th:name="closeingdate" hidden>
+                <input th:id="State" th:value="${SFILE.getState()}" th:name="state" hidden>
+                <input id="iptMember" th:name="send" th:value="${SFILE.getSend()}" hidden>
+                <div class="form-group col-md-6 col-sm-6 ">
+                    <label class="col-sm-4 control-label">审核员</label>
+                    <div class="col-sm-8" th:switch="${target} eq 1">
+                        <div th:case="true">
+                            <select class="form-control" name="auditor">
+                                <option th:selected="${auditor.getAccount()==SFILE.getAuditor()}"
+                                        th:each="auditor:${auditors}"
+                                        th:text="${auditor.getName()}" th:value="${auditor.getAccount()}"></option>
+                            </select>
+                        </div>
+                        <div th:case="false">
+                            <input th:value="${SFILE.getAuditor()}" name="auditor" type="text" value=""
+                                   class="form-control"
+                                   id="auditor" placeholder="审核员" th:readonly="true">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label for="auditing" class="col-sm-4 control-label">审核意见</label>
+                    <div class="col-sm-8" th:switch="${target} eq 2">
+                        <div th:case="true">
+                            <input th:value="${SFILE.getAuditing()}" name="auditing" type="auditing" value=""
+                                   class="form-control"
+                                   id="auditing" placeholder="审核">
+                        </div>
+                        <div th:case="false">
+                            <input th:value="${SFILE.getAuditing()}" name="auditing" type="auditing" value=""
+                                   class="form-control"
+                                   id="auditing1" placeholder="审核" th:readonly="true">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6 ">
+                    <label class="col-sm-4 control-label">复核员</label>
+                    <div class="col-sm-8" th:switch="${target} eq 1">
+                        <div th:case="true">
+                            <select class="form-control" name="checkingman">
+                                <option th:selected="${checkingman.getAccount()==SFILE.getCheckingman()}"
+                                        th:each="checkingman:${checkingmans}" th:text="${checkingman.getName()}"
+                                        th:value="${checkingman.getAccount()}"></option>
+                            </select>
+                        </div>
+                        <div th:case="false">
+                            <input th:value="${SFILE.getCheckingman()}" name="checkingman" type="text" value=""
+                                   class="form-control"
+                                   id="checkingman" placeholder="复核员" th:readonly="true">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label for="checking" class="col-sm-4 control-label">复核意见</label>
+                    <div class="col-sm-8" th:switch="${target} eq 3">
+                        <div th:case="true">
+                            <input th:value="${SFILE.getChecking()}" name="checking" type="text" value=""
+                                   class="form-control"
+                                   id="checking" placeholder="复核">
+                        </div>
+                        <div th:case="false">
+                            <input th:value="${SFILE.getChecking()}" name="checking" type="text" value=""
+                                   class="form-control"
+                                   id="checking1" placeholder="复核" th:readonly="true">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6">
+                    <label for="copies" class="col-sm-4 control-label">签发员</label>
+                    <div class="col-sm-8" th:switch="${target} eq 1">
+                        <div th:case="true">
+                            <select class="form-control" name="signator">
+                                <option th:selected="${signator.getAccount()==SFILE.getSignator()}"
+                                        th:each="signator:${signators}" th:text="${signator.getName()}"
+                                        th:value="${signator.getAccount()}"></option>
+                            </select>
+                        </div>
+                        <div th:case="false">
+                            <input th:value="${SFILE.getSignator()}" name="signator" type="text" value=""
+                                   class="form-control"
+                                   id="signator" placeholder="签发员" th:readonly="true">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6 col-sm-6">
+                    <label for="signing" class="col-sm-4 control-label">签发意见</label>
+                    <div class="col-sm-8" th:switch="${target} eq 4">
+                        <div th:case="true">
+                            <input th:value="${SFILE.getSigning()}" name="signing" type="text" value=""
+                                   class="form-control"
+                                   id="signing" placeholder="签发">
+                        </div>
+                        <div th:case="false">
+                            <input th:value="${SFILE.getSigning()}" name="signing" type="text" value=""
+                                   class="form-control"
+                                   id="signing1" placeholder="签发" th:readonly="true">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6 ">
+                    <label class="col-sm-4 control-label">分发员</label>
+                    <div class="col-sm-8" th:switch="${target} eq 1">
+                        <div th:case="true">
+                            <select class="form-control" name="distributor">
+                                <option th:selected="${SFILE.getDistributor()}" th:each="distributor:${distributors}"
+                                        th:text="${distributor.getName()}"
+                                        th:value="${distributor.getAccount()}"></option>
+                            </select>
+                        </div>
+
+                        <div th:case="false">
+                            <input th:value="${SFILE.getDistributor()}" name="distributor" type="text" value=""
+                                   class="form-control"
+                                   id="distributor" placeholder="分发" th:readonly="ture">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-4">
+                        <a class="btn btn-small pull-right btn-danger" th:href="@{/sfile/toIndex}">退出</a>
+                        <button th:if="${SFILE.state ne '分发'}" type="button" name="submit"
+                                class="btn btn-success pull-right tb btn-success" onclick="submitSFile(1)" id="test1">提交
+                        </button>
+                        <button th:if="${SFILE.state ne '分发'}" type="button" name="save"
+                                class="btn btn-success pull-right tb btn-success" onclick="submitSFile(0)" id="test2">保存
+                        </button>
+                        <button type="button" name="back" class="btn btn-success pull-right tb btn-success"
+                                onclick="submitSFile(-1)">退回
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script>
+    tinymce.init({
+        selector: '#filecontent',
+        language: 'zh_CN',
+        plugins: 'print preview searchreplace autolink directionality visualchars fullscreen image link media template code table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern paste emoticons bdmap indent2em lineheight autoresize',
+        toolbar: 'code forecolor backcolor bold italic underline strikethrough link anchor | alignleft aligncenter alignright indent2em lineheight | \
+                    bullist numlist | blockquote subscript superscript removeformat | \
+                    table image media bdmap emoticons charmap hr pagebreak insertdatetime | fullscreen ',
+        menubar: false,
+        fontsize_formats: '12px 14px 16px 18px 24px 36px 48px 56px 72px',
+        autosave_ask_before_unload: false,
+        toolbar_drawer: false,
+        icons: 'ax-color',
+    });
+    tinymce.init({
+        selector: '#affixcontent',
+        language: 'zh_CN',
+        plugins: 'print preview searchreplace autolink directionality visualchars fullscreen image link media template code table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern paste emoticons bdmap indent2em lineheight autoresize',
+        toolbar: 'code forecolor backcolor bold italic underline strikethrough link anchor | alignleft aligncenter alignright indent2em lineheight | \
+                    bullist numlist | blockquote subscript superscript removeformat | \
+                    table image media bdmap emoticons charmap hr pagebreak insertdatetime | fullscreen ',
+        menubar: false,
+        fontsize_formats: '12px 14px 16px 18px 24px 36px 48px 56px 72px',
+        autosave_ask_before_unload: false,
+        toolbar_drawer: false,
+        icons: 'ax-color',
+    });
+</script>
+
+
+</body>
+</html>

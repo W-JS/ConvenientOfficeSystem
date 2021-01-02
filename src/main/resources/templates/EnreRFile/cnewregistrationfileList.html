@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="Commen/header::header(null)"></div>
+<body>
+<p>续登记收文列表</p>
+<table class="ui selectable celled table">
+    <thead>
+    <tr>
+        <th>文号</th>
+        <th>文件标题</th>
+        <th>来文单位</th>
+        <th>密级</th>
+        <th>登记</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="info : ${cregFilesRes}">
+        <td th:text="${info.fileno}"></td>
+        <td th:text="${info.filecaption}"></td>
+        <td th:text="${info.senderorgan}"></td>
+        <td th:text="${info.confidential}"></td>
+        <td>
+            <button  type="submit" onclick="getRowValue(this)">click</button>
+<!--            <a th:href="@{/EnreSFile/test(inf=${regFilesRes})}">click</a>-->
+        </td>
+        <td style="display:none" th:text="${info.fileno}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<script th:inline="javascript">
+
+    $(function (){
+
+    })
+
+    function getRowValue(element) {
+        //this做为参数传过来是方法中的element,parentNode就是获取父节点，获取了连个父节点，就相当于获取了tr
+        var node = element.parentNode.parentNode;
+        // console.log(node.children[5].innerHTML)
+        var dat = node.children[5].innerHTML;
+        // alert(dat.find("senderOrgan"));
+        // var ss = JSON.stringify(dat)
+        var data = [[${cregFilesRes}]];
+        // alert(data)
+        // console.log(data)
+        for (let i = 0; i <data.length ; i++) {
+            if(data[i].fileno==dat){
+                $.ajax({
+                    async:false,
+                    type: "POST",
+                    url: "/ConvenientOfficeSystem/EnreRFile/getregistrationFile",
+                    dataType: "json",
+                    data: JSON.stringify(data[i]),
+                    contentType: "application/json;charset=UTF-8",
+                    success: function (data) {
+                        if(data.resultCode==1){
+                            window.location.href="/ConvenientOfficeSystem/EnreRFile/cregistrationFile"
+                        }
+
+                    }
+                })
+            }
+        }
+    }
+
+</script>
+
+</body>
+<div th:replace="Commen/footer::footer"></div>
+</html>

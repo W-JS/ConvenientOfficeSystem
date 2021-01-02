@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <style>
+        .tree li {
+            list-style-type: none;
+            cursor:pointer;
+        }
+        table tbody tr:nth-child(odd){background:#F4F4F4;}
+        table tbody td:nth-child(even){color:#C00;}
+    </style>
+</head>
+<!--<div th:replace="Commen/header::header(null)"></div>-->
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div><a class="navbar-brand" style="font-size:32px;" href="#">档案管理</a></div>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li style="padding-top:8px;">
+			</li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-2 col-md-2 sidebar">
+			<div class="tree">
+				<ul style="padding-left:0px;" class="list-group">
+					<li class="list-group-item tree-closed" >
+                        <a th:href="@{/}"><i class="glyphicon glyphicon-dashboard"></i> 首页</a>
+					</li>
+					<li class="list-group-item tree-closed">
+                        <span><i class="glyphicon glyphicon glyphicon-tasks"></i> 文件存档管理 </span>
+					</li>
+					<li class="list-group-item tree-closed">
+                        <a th:href="@{/archive/borrowingindex}"><i class="glyphicon glyphicon-ok"></i> 借阅管理 </a>
+					</li>
+                    <li class="list-group-item tree-closed">
+                        <a th:href="@{/archive/borrow}"><i class="glyphicon glyphicon-th-large"></i> 我的借阅 </a>
+                    </li>
+				</ul>
+			</div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+				<h3 class="panel-title"><i class="glyphicon glyphicon-th"></i> 数据列表</h3>
+			  </div>
+			  <div class="panel-body">
+<form class="form-inline" role="form" style="float:left;">
+  <div class="form-group has-feedback">
+    <div class="input-group">
+      <div class="input-group-addon">查询条件</div>
+      <input class="form-control has-success" id="selectFor" type="text" placeholder="请输入查询条件">
+    </div>
+  </div>
+  <button type="button" class="btn btn-warning" id="toSelect"><i class="glyphicon glyphicon-search"></i> 查询</button>
+</form>
+<button type="button" class="btn btn-primary" style="float:right;" onclick="window.location.href='add'"><i class="glyphicon glyphicon-plus"></i> 新增</button>
+<br>
+ <hr style="clear:both;">
+          <div class="table-responsive">
+            <table class="table  table-bordered">
+              <thead>
+                <tr >
+                  <th width="30">#</th>
+                  <th>卷名</th>
+                  <th>卷内文件份数/案卷容量</th>
+                  <th width="100">操作</th>
+                </tr>
+              </thead>
+              <tbody id="archiveData">
+
+              </tbody>
+			  <tfoot>
+			     <tr >
+				     <td colspan="4" align="center">
+						<ul class="pagination">
+							 </ul>
+					 </td>
+				 </tr>
+
+			  </tfoot>
+            </table>
+          </div>
+			  </div>
+			</div>
+        </div>
+      </div>
+    </div>
+    <script th:src="@{/js/jquery-2.1.1.min.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/docs.min.js}"></script>
+    <script th:src="@{/layer/layer.js}"></script>
+
+    <script type="text/javascript">
+        var likeFlg = false;
+        $(function () {
+
+            $("#toSelect").click(function () {
+                var selVal = $('#selectFor').val();
+                if (selVal == ''){
+                    likeFlg = false;
+                } else{
+                    likeFlg = true;
+                }
+
+                queryPage(1);
+            })
+
+            queryPage(1);
+        })
+
+        function queryPage(page) {
+            var loadingIndex = null;
+
+            var jsonData = {"page" : page};
+            if (likeFlg){
+                jsonData.archivename = $('#selectFor').val();
+            }
+
+            $.ajax({
+                type : 'GET',
+                url : '/ConvenientOfficeSystem/archive/archives',
+                data : jsonData,
+                before : function(){
+                    loadingIndex = layer.msg('处理中', {icon : 16});
+                },
+                success : function (data) {
+                    layer.close(loadingIndex);
+                    if (data.success){
+                        var tableContent = "";
+                        var pageContent = "";
+
+                        var archivePage = data.page;
+                        var archives = archivePage.data;
+
+                        $.each(archives, function (i, archive) {
+                            tableContent += '<tr>';
+                            tableContent += '<td>'+(i+1)+'</td>';
+                            tableContent += '<td>'+archive.archivename+'</td>';
+                            tableContent += '<td>'+archive.copies+'/'+archive.capacity+'</td>';
+                            tableContent += '<td>';
+                            if(archive.closeornot == 2) {
+                                tableContent += '<button type="button" onclick="toGetFile('+archive.archiveno+')" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
+                                tableContent += '<button type="button" onclick="toChangeState('+archive.archiveno+')" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                            }
+                            tableContent += '<button type="button" onclick="toDelete('+archive.archiveno+',\''+archive.archivename+'\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+                            tableContent += '</td>';
+                            tableContent += '</tr>';
+                        })
+
+                        if(page > 1){
+                            pageContent += '<li><a href="#" onclick="queryPage('+(page - 1)+')">上一页</a></li>';
+                        }
+
+                        for(var i = 1; i <= archivePage.totalPage; i++){
+                            if (page == i){
+                                pageContent += '<li class="active"><a href="#">'+i+'</a></li>';
+                            }else {
+                                pageContent += '<li><a href="#" onclick="queryPage('+i+')">'+i+'</a></li>';
+                            }
+                        }
+
+                        if(page < archivePage.totalPage){
+                            pageContent += '<li><a href="#" onclick="queryPage('+(page + 1)+')">下一页</a></li>';
+                        }
+
+                        $('#archiveData').html(tableContent);
+                        $('.pagination').html(pageContent);
+                    }
+                }
+            })
+        }
+
+
+        function toGetFile(archiveno) {
+            location.href = "/ConvenientOfficeSystem/archive/filearchive/"+archiveno;
+        }
+
+
+
+        function toDelete(archiveno, archivename) {
+            var loadingIndex = null;
+            layer.confirm('确定要删除次案卷吗?',
+                {icon: 3, title: '系统提示'},
+                function () {
+                    $.ajax({
+                        type : 'DELETE',
+                        url : '/ConvenientOfficeSystem/archive/filearchive1',
+                        data : {
+                            'archiveno' : archiveno
+                        },
+                        before : function(){
+                            loadingIndex = layer.msg('处理中', {icon : 16});
+                        },
+                        success : function (data) {
+                            if (data.success) {
+                                layer.msg("移除成功", {time:2000, icon:6}, function(){
+                                });
+                                location.href = "/ConvenientOfficeSystem/archive/index";
+                            } else {
+                                layer.msg("卷内文件不为空,请先将卷内文件移除", {time:2000, icon:5, shift:6}, function(){
+
+                                })
+                            }
+                        }
+                    });
+                });
+        }
+
+        function toChangeState(archiveno) {
+            layer.confirm('确定要将其封卷吗?',
+                {icon: 3, title: '系统提示'},
+                function () {
+                    location.href = "/ConvenientOfficeSystem/archive/archivestate/1" + "/" + archiveno;
+                })
+        }
+    </script>
+  </body>
+</html>

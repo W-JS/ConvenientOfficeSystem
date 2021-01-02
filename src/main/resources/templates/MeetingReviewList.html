@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>会议审核列表</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}" href="../static/favicon.ico"/>
+
+
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 可选的Bootstrap主题文件（一般不使用） -->
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.bootcss.com/jquery/3.2.0/jquery.min.js" type="text/javascript"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        table thead tr:nth-child(odd) {
+
+            background: #92B8B1;
+
+        }
+
+        table tbody tr:nth-child(2n) {
+
+            background: #05d6d7;
+
+        }
+
+        table tbody tr:nth-child(2n+1) {
+
+            background: #05d78a;
+
+        }
+    </style>
+
+</head>
+
+<body>
+<!--<a class="btn btn-sm btn-primary"  th:href="@{/enreSFile/findAll/{account}/{target}/(account=${session.account},target=${target})}">登记完的表</a>-->
+
+<h1>审核会议</h1>
+<main>
+    <table border="1px" id="SFileList">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span12">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>会议序号</th>
+                            <th>会议名称</th>
+                            <th>会议议题</th>
+                            <th>召集人</th>
+                            <th>主持人</th>
+                            <th>发言人</th>
+                            <th>会议地点</th>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>申请人</th>
+                            <th>审核人</th>
+                            <th>审核</th>
+                            <th>会议通知人</th>
+                            <th>纪要草拟人</th>
+                            <th>会议状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="meeting:${meetings}" th:if="${user eq meeting.auditor}">
+                            <td th:text="${meeting.getMeetingserialno()}"></td>
+                            <td th:text="${meeting.getMeetingname()}"></td>
+                            <td th:text="${meeting.getTopic()}"></td>
+                            <td th:text="${meeting.getOrganizer()}"></td>
+                            <td th:text="${meeting.getChieforganizer()}"></td>
+                            <td th:text="${meeting.getSpokesman()}"></td>
+                            <td th:text="${meeting.getMeetinglocus()}"></td>
+                            <td th:text="${meeting.getStarttime()}"></td>
+                            <td th:text="${meeting.getEndtime()}"></td>
+                            <td th:text="${meeting.getApplicator()}"></td>
+                            <td th:text="${meeting.getAuditor()}"></td>
+                            <td th:text="${meeting.getAuditing()}"></td>
+                            <td th:text="${meeting.getInformer()}"></td>
+                            <td th:text="${meeting.getMinuterecorder()}"></td>
+                            <td th:text="${meeting.getState()}"></td>
+                            <td><a class="btn btn-small pull-right btn-success"
+                                   th:href="@{/apl/review/{meetingSerialNo}/(meetingSerialNo=${meeting.getMeetingserialno()})}">审核</a>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </table>
+    <a class="btn btn-small pull-right btn-danger" th:href="@{/meetingindex}">退出</a>
+</main>
+
+</body>
+</html>

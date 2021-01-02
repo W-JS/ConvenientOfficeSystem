@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+	<link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+	<link rel="stylesheet" th:href="@{/css/main.css}">
+	<link rel="stylesheet" th:href="@{/css/doc.min.css}">
+	<style>
+	.tree li {
+        list-style-type: none;
+		cursor:pointer;
+	}
+	</style>
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+            <div><a class="navbar-brand" style="font-size:32px;" href="user.html">签收借阅单</a></div>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li style="padding-top:8px;">
+			</li>
+
+          </ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+
+        <div class="col-sm-9 col-sm-offset-3 col-md-15 col-md-offset-2 main">
+			<div class="panel panel-default">
+              <div class="panel-heading">签收借阅单<div style="float:right;cursor:pointer;" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-question-sign"></i></div></div>
+			  <div class="panel-body">
+				<form role="form">
+				  <div class="form-group">
+					<label for="borrowingno">借阅单编号</label>
+					<input type="text" class="form-control" id="borrowingno" placeholder="请输入借阅单编号" th:value="${borrowing.borrowingno}" readonly="readonly">
+				  </div>
+				  <div class="form-group">
+					<label for="borrower">借阅人</label>
+					<input type="text" class="form-control" id="borrower" placeholder="请输入借阅人" th:value="${borrowing.borrower}" readonly="readonly">
+				  </div>
+				  <div class="form-group">
+					<label for="archiveno">卷号</label>
+					<input type="email" class="form-control" id="archiveno" placeholder="请输入卷号" th:value="${borrowing.archiveno}" readonly="readonly">
+				  </div>
+					<div class="form-group">
+						<label for="ileno">文号</label>
+						<input type="email" class="form-control" id="ileno" placeholder="请输入文号" th:value="${borrowing.ileno}" readonly="readonly">
+					</div>
+					<div class="form-group">
+						<label for="borrowingperiod">借阅期限</label>
+						<input type="email" class="form-control" id="borrowingperiod" placeholder="请输入借阅期限" th:value="${borrowing.borrowingperiod}" readonly="readonly">
+					</div>
+					<div class="form-group">
+						<label for="applicationtime">申请时间</label>
+						<input type="email" class="form-control" id="applicationtime" placeholder="请输入申请时间" th:value="${#dates.format(borrowing.applicationtime,'yyyy-MM-dd HH:mm:ss')}" readonly="readonly">
+					</div>
+					<div class="form-group">
+						<label for="returntime">归还时间</label>
+						<input type="email" class="form-control" id="returntime" placeholder="请输入归还时间" th:value="${#dates.format(borrowing.returntime,'yyyy-MM-dd HH:mm:ss')}" readonly="readonly">
+					</div>
+				  <button type="button" class="btn btn-success" id="btn1">确定</button>
+				</form>
+			  </div>
+			</div>
+        </div>
+      </div>
+    </div>
+
+    <script th:src="@{/js/jquery-2.1.1.min.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/docs.min.js}"></script>
+        <script type="text/javascript">
+            $(function () {
+			    $(".list-group-item").click(function(){
+				    if ( $(this).find("ul") ) {
+						$(this).toggleClass("tree-closed");
+						if ( $(this).hasClass("tree-closed") ) {
+							$("ul", this).hide("fast");
+						} else {
+							$("ul", this).show("fast");
+						}
+					}
+				});
+
+				//点击确认 表示已经签收 请求后端 改变状态为已签收
+				$("#btn1").click(function () {
+					//获取借阅单号
+					var period = 0;
+					var borrowingno = $("#borrowingno").val();
+					location.href = "/ConvenientOfficeSystem/archive/state/"+ 4 + "/" + borrowingno + "/" + period;
+				})
+            });
+        </script>
+  </body>
+</html>

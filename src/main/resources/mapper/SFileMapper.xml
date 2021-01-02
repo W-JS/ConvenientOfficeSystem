@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.huat.mapper.SFileMapper" >
+  <resultMap id="BaseResultMap" type="cn.huat.pojo.SFile" >
+    <id column="draftNo" property="draftno" jdbcType="VARCHAR" />
+    <result column="draftDate" property="draftdate" jdbcType="TIMESTAMP" />
+    <result column="fileCaption" property="filecaption" jdbcType="VARCHAR" />
+    <result column="affixCaption" property="affixcaption" jdbcType="VARCHAR" />
+    <result column="mainTo" property="mainto" jdbcType="VARCHAR" />
+    <result column="closeingDate" property="closeingdate" jdbcType="TIMESTAMP" />
+    <result column="keyWord" property="keyword" jdbcType="VARCHAR" />
+    <result column="draftsMan" property="draftsman" jdbcType="INTEGER" />
+    <result column="confidential" property="confidential" jdbcType="VARCHAR" />
+    <result column="express" property="express" jdbcType="VARCHAR" />
+    <result column="fileNo" property="fileno" jdbcType="VARCHAR" />
+    <result column="copies" property="copies" jdbcType="INTEGER" />
+    <result column="CC" property="cc" jdbcType="VARCHAR" />
+    <result column="auditor" property="auditor" jdbcType="INTEGER" />
+    <result column="auditing" property="auditing" jdbcType="VARCHAR" />
+    <result column="checkingMan" property="checkingman" jdbcType="INTEGER" />
+    <result column="checking" property="checking" jdbcType="VARCHAR" />
+    <result column="signator" property="signator" jdbcType="INTEGER" />
+    <result column="signing" property="signing" jdbcType="VARCHAR" />
+    <result column="distributor" property="distributor" jdbcType="INTEGER" />
+    <result column="distributing" property="distributing" jdbcType="VARCHAR" />
+    <result column="fileContent" property="filecontent" jdbcType="VARCHAR" />
+    <result column="affixContent" property="affixcontent" jdbcType="VARCHAR" />
+    <result column="send" property="send" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    draftNo, draftDate, fileCaption, affixCaption, mainTo, closeingDate, keyWord, draftsMan,
+    confidential, express, fileNo, copies, CC, auditor, auditing, checkingMan, checking,
+    signator, signing, distributor, distributing, fileContent, affixContent, send, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from SFile
+    where draftNo = #{draftno,jdbcType=VARCHAR}
+  </select>
+  <select id="findAll" resultType="cn.huat.pojo.SFile">
+    select
+    <include refid="Base_Column_List" />
+    from SFile
+  </select>
+  <select id="findByState" resultType="cn.huat.pojo.SFile" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from SFile
+    where state=#{state,jdbcType=VARCHAR}
+  </select>
+  <select id="findByfileNo" resultType="cn.huat.pojo.SFile" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from SFile
+    where fileNo = #{fileNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SFile
+    where draftNo = #{draftno,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.huat.pojo.SFile" >
+    insert into SFile (draftNo, draftDate, fileCaption,
+      affixCaption, mainTo, closeingDate,
+      keyWord, draftsMan, confidential,
+      express, fileNo, copies,
+      CC, auditor, auditing,
+      checkingMan, checking, signator,
+      signing, distributor, distributing,
+      fileContent, affixContent, send,
+      state)
+    values (#{draftno,jdbcType=VARCHAR},  current_timestamp, #{filecaption,jdbcType=VARCHAR},
+      #{affixcaption,jdbcType=VARCHAR}, #{mainto,jdbcType=VARCHAR}, current_timestamp,
+      #{keyword,jdbcType=VARCHAR}, #{draftsman,jdbcType=INTEGER}, #{confidential,jdbcType=VARCHAR},
+      #{express,jdbcType=VARCHAR}, #{fileno,jdbcType=VARCHAR}, #{copies,jdbcType=INTEGER},
+      #{cc,jdbcType=VARCHAR}, #{auditor,jdbcType=INTEGER}, #{auditing,jdbcType=VARCHAR},
+      #{checkingman,jdbcType=INTEGER}, #{checking,jdbcType=VARCHAR}, #{signator,jdbcType=INTEGER},
+      #{signing,jdbcType=VARCHAR}, #{distributor,jdbcType=INTEGER}, #{distributing,jdbcType=VARCHAR},
+      #{filecontent,jdbcType=VARCHAR}, #{affixcontent,jdbcType=VARCHAR}, #{send,jdbcType=INTEGER},
+      #{state,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.huat.pojo.SFile" >
+    insert into SFile
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="draftno != null" >
+        draftNo,
+      </if>
+      <if test="draftdate != null" >
+        draftDate,
+      </if>
+      <if test="filecaption != null" >
+        fileCaption,
+      </if>
+      <if test="affixcaption != null" >
+        affixCaption,
+      </if>
+      <if test="mainto != null" >
+        mainTo,
+      </if>
+      <if test="closeingdate != null" >
+        closeingDate,
+      </if>
+      <if test="keyword != null" >
+        keyWord,
+      </if>
+      <if test="draftsman != null" >
+        draftsMan,
+      </if>
+      <if test="confidential != null" >
+        confidential,
+      </if>
+      <if test="express != null" >
+        express,
+      </if>
+      <if test="fileno != null" >
+        fileNo,
+      </if>
+      <if test="copies != null" >
+        copies,
+      </if>
+      <if test="cc != null" >
+        CC,
+      </if>
+      <if test="auditor != null" >
+        auditor,
+      </if>
+      <if test="auditing != null" >
+        auditing,
+      </if>
+      <if test="checkingman != null" >
+        checkingMan,
+      </if>
+      <if test="checking != null" >
+        checking,
+      </if>
+      <if test="signator != null" >
+        signator,
+      </if>
+      <if test="signing != null" >
+        signing,
+      </if>
+      <if test="distributor != null" >
+        distributor,
+      </if>
+      <if test="distributing != null" >
+        distributing,
+      </if>
+      <if test="filecontent != null" >
+        fileContent,
+      </if>
+      <if test="affixcontent != null" >
+        affixContent,
+      </if>
+      <if test="send != null" >
+        send,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="draftno != null" >
+        #{draftno,jdbcType=VARCHAR},
+      </if>
+      <if test="draftdate != null" >
+        #{draftdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="filecaption != null" >
+        #{filecaption,jdbcType=VARCHAR},
+      </if>
+      <if test="affixcaption != null" >
+        #{affixcaption,jdbcType=VARCHAR},
+      </if>
+      <if test="mainto != null" >
+        #{mainto,jdbcType=VARCHAR},
+      </if>
+      <if test="closeingdate != null" >
+        #{closeingdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="keyword != null" >
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="draftsman != null" >
+        #{draftsman,jdbcType=INTEGER},
+      </if>
+      <if test="confidential != null" >
+        #{confidential,jdbcType=VARCHAR},
+      </if>
+      <if test="express != null" >
+        #{express,jdbcType=VARCHAR},
+      </if>
+      <if test="fileno != null" >
+        #{fileno,jdbcType=VARCHAR},
+      </if>
+      <if test="copies != null" >
+        #{copies,jdbcType=INTEGER},
+      </if>
+      <if test="cc != null" >
+        #{cc,jdbcType=VARCHAR},
+      </if>
+      <if test="auditor != null" >
+        #{auditor,jdbcType=INTEGER},
+      </if>
+      <if test="auditing != null" >
+        #{auditing,jdbcType=VARCHAR},
+      </if>
+      <if test="checkingman != null" >
+        #{checkingman,jdbcType=INTEGER},
+      </if>
+      <if test="checking != null" >
+        #{checking,jdbcType=VARCHAR},
+      </if>
+      <if test="signator != null" >
+        #{signator,jdbcType=INTEGER},
+      </if>
+      <if test="signing != null" >
+        #{signing,jdbcType=VARCHAR},
+      </if>
+      <if test="distributor != null" >
+        #{distributor,jdbcType=INTEGER},
+      </if>
+      <if test="distributing != null" >
+        #{distributing,jdbcType=VARCHAR},
+      </if>
+      <if test="filecontent != null" >
+        #{filecontent,jdbcType=VARCHAR},
+      </if>
+      <if test="affixcontent != null" >
+        #{affixcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="send != null" >
+        #{send,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <insert id="insertByDraftsman">
+
+
+
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.huat.pojo.SFile" >
+    update SFile
+    <set >
+      <if test="draftdate != null" >
+        draftDate = #{draftdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="filecaption != null" >
+        fileCaption = #{filecaption,jdbcType=VARCHAR},
+      </if>
+      <if test="affixcaption != null" >
+        affixCaption = #{affixcaption,jdbcType=VARCHAR},
+      </if>
+      <if test="mainto != null" >
+        mainTo = #{mainto,jdbcType=VARCHAR},
+      </if>
+      <if test="closeingdate != null" >
+        closeingDate = #{closeingdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="keyword != null" >
+        keyWord = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="draftsman != null" >
+        draftsMan = #{draftsman,jdbcType=INTEGER},
+      </if>
+      <if test="confidential != null" >
+        confidential = #{confidential,jdbcType=VARCHAR},
+      </if>
+      <if test="express != null" >
+        express = #{express,jdbcType=VARCHAR},
+      </if>
+      <if test="fileno != null" >
+        fileNo = #{fileno,jdbcType=VARCHAR},
+      </if>
+      <if test="copies != null" >
+        copies = #{copies,jdbcType=INTEGER},
+      </if>
+      <if test="cc != null" >
+        CC = #{cc,jdbcType=VARCHAR},
+      </if>
+      <if test="auditor != null" >
+        auditor = #{auditor,jdbcType=INTEGER},
+      </if>
+      <if test="auditing != null" >
+        auditing = #{auditing,jdbcType=VARCHAR},
+      </if>
+      <if test="checkingman != null" >
+        checkingMan = #{checkingman,jdbcType=INTEGER},
+      </if>
+      <if test="checking != null" >
+        checking = #{checking,jdbcType=VARCHAR},
+      </if>
+      <if test="signator != null" >
+        signator = #{signator,jdbcType=INTEGER},
+      </if>
+      <if test="signing != null" >
+        signing = #{signing,jdbcType=VARCHAR},
+      </if>
+      <if test="distributor != null" >
+        distributor = #{distributor,jdbcType=INTEGER},
+      </if>
+      <if test="distributing != null" >
+        distributing = #{distributing,jdbcType=VARCHAR},
+      </if>
+      <if test="filecontent != null" >
+        fileContent = #{filecontent,jdbcType=VARCHAR},
+      </if>
+      <if test="affixcontent != null" >
+        affixContent = #{affixcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="send != null" >
+        send = #{send,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where draftNo = #{draftno,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.huat.pojo.SFile" >
+    update SFile
+    set draftDate = #{draftdate,jdbcType=TIMESTAMP},
+      fileCaption = #{filecaption,jdbcType=VARCHAR},
+      affixCaption = #{affixcaption,jdbcType=VARCHAR},
+      mainTo = #{mainto,jdbcType=VARCHAR},
+      closeingDate = #{closeingdate,jdbcType=TIMESTAMP},
+      keyWord = #{keyword,jdbcType=VARCHAR},
+      draftsMan = #{draftsman,jdbcType=INTEGER},
+      confidential = #{confidential,jdbcType=VARCHAR},
+      express = #{express,jdbcType=VARCHAR},
+      fileNo = #{fileno,jdbcType=VARCHAR},
+      copies = #{copies,jdbcType=INTEGER},
+      CC = #{cc,jdbcType=VARCHAR},
+      auditor = #{auditor,jdbcType=INTEGER},
+      auditing = #{auditing,jdbcType=VARCHAR},
+      checkingMan = #{checkingman,jdbcType=INTEGER},
+      checking = #{checking,jdbcType=VARCHAR},
+      signator = #{signator,jdbcType=INTEGER},
+      signing = #{signing,jdbcType=VARCHAR},
+      distributor = #{distributor,jdbcType=INTEGER},
+      distributing = #{distributing,jdbcType=VARCHAR},
+      fileContent = #{filecontent,jdbcType=VARCHAR},
+      affixContent = #{affixcontent,jdbcType=VARCHAR},
+      send = #{send,jdbcType=INTEGER},
+      state = #{state,jdbcType=VARCHAR}
+    where draftNo = #{draftno,jdbcType=VARCHAR}
+  </update>
+
+  <!--邵传中-->
+  <select id="selectByState" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from SFile
+    where state = #{state}
+  </select>
+
+  <select id="selectByFileNo" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from SFile
+    where fileNo = #{fileno}
+  </select>
+
+<!--  程根-->
+  <select id="findByStateUnArchive" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from SFile
+    where state = "登记完毕"
+  </select>
+
+</mapper>

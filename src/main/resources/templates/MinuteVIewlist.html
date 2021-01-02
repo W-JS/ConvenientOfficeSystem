@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>会议记录列表</title>
+    <link rel="icon" type="image/x-icon" th:href="@{/favicon.ico}" href="../static/favicon.ico"/>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 可选的Bootstrap主题文件（一般不使用） -->
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.bootcss.com/jquery/3.2.0/jquery.min.js" type="text/javascript"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        table thead tr:nth-child(odd) {
+
+            background: #92B8B1;
+
+        }
+
+        table tbody tr:nth-child(2n) {
+
+            background: #05d6d7;
+
+        }
+
+        table tbody tr:nth-child(2n+1) {
+
+            background: #05d78a;
+
+        }
+    </style>
+
+</head>
+
+<body>
+<!--<a class="btn btn-sm btn-primary"  th:href="@{/enreSFile/findAll/{account}/{target}/(account=${session.account},target=${target})}">登记完的表</a>-->
+
+<h1>会议记录列表</h1>
+<main>
+    <table border="1px" id="MinuteViewList">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span12">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>主键</th>
+                            <th>会议序号</th>
+                            <th>会议名称</th>
+                            <th>文号</th>
+                            <th>文件标题</th>
+                            <th>主题词</th>
+                            <th>主持人</th>
+                            <th>会议地点</th>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>参加人员</th>
+                            <th>主要议题及其讨论意见</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="MINUTE:${minutes}" >
+                            <td th:text="${MINUTE.id}"></td>
+                            <td th:text="${MINUTE.getMeetingserialno()}"></td>
+                            <td th:text="${MINUTE.getMeetingname()}"></td>
+                            <td th:text="${MINUTE.getFileno()}"></td>
+                            <td th:text="${MINUTE.getFilecaption()}"></td>
+                            <td th:text="${MINUTE.getKeyword()}"></td>
+                            <td th:text="${MINUTE.getChieforganizer()}"></td>
+                            <td th:text="${MINUTE.getMeetinglocus()}"></td>
+                            <td th:text="${MINUTE.getStarttime()}"></td>
+                            <td th:text="${MINUTE.getEndtime()}"></td>
+                            <td th:text="${MINUTE.getAttendee()}"></td>
+                            <td th:text="${MINUTE.getTopicandargumentation()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </table>
+    <a class="btn btn-small pull-right btn-danger" th:href="@{/meetingindex}">退出</a>
+</main>
+
+</body>
+</html>

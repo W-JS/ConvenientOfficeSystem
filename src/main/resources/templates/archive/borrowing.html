@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <style>
+        .tree li {
+            list-style-type: none;
+            cursor: pointer;
+        }
+
+        table tbody tr:nth-child(odd) {
+            background: #F4F4F4;
+        }
+
+        table tbody td:nth-child(even) {
+            color: #C00;
+        }
+    </style>
+</head>
+<!--<div th:replace="Commen/header::header(null)"></div>-->
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <div><a class="navbar-brand" style="font-size:32px;" href="#">档案管理</a></div>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2 col-md-2 sidebar">
+            <div class="tree">
+                <ul style="padding-left:0px;" class="list-group">
+                    <li class="list-group-item tree-closed">
+                        <a th:href="@{/}"><i class="glyphicon glyphicon-dashboard"></i> 首页</a>
+                    </li>
+                    <li class="list-group-item tree-closed">
+                        <a th:href="@{/archive/index}"><i class="glyphicon glyphicon glyphicon-tasks"></i> 文件存档管理 </a>
+                    </li>
+                    <li class="list-group-item tree-closed">
+                        <span><i class="glyphicon glyphicon-ok"></i> 借阅管理 </span>
+                    </li>
+                    <li class="list-group-item tree-closed">
+                        <a th:href="@{/archive/borrow}"><i class="glyphicon glyphicon-th-large"></i> 我的借阅 </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="glyphicon glyphicon-th"></i> 数据列表</h3>
+                </div>
+                <div class="panel-body">
+                    <br>
+                    <hr style="clear:both;">
+                    <div class="table-responsive">
+                        <table class="table  table-bordered">
+                            <thead>
+                            <tr>
+                                <th width="30">#</th>
+                                <th>借阅者编号</th>
+                                <th>文号</th>
+                                <th>处理状态</th>
+                                <th width="100">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="borrowingData">
+
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="5" align="center">
+                                    <ul class="pagination">
+                                    </ul>
+                                </td>
+                            </tr>
+
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/jquery-2.1.1.min.js}"></script>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/docs.min.js}"></script>
+<script th:src="@{/layer/layer.js}"></script>
+<script type="text/javascript">
+    $(function () {
+
+        queryPage(1);
+    })
+
+    //进入页面就调用此方法
+    function queryPage(page) {
+        var loadingIndex = null;
+
+        //获取页码信息 默认是第一页
+        var jsonData = {"page": page};
+
+        //ajax请求后端 获取所有的借阅单信息 成功则全部显示出来
+        $.ajax({
+            type: 'GET',
+            url: '/ConvenientOfficeSystem/archive/borrowing',
+            data: jsonData,
+            before: function () {
+                loadingIndex = layer.msg('处理中', {icon: 16});
+            },
+            success: function (data) {
+                layer.close(loadingIndex);
+                if (data.success) {
+                    var tableContent = "";
+                    var pageContent = "";
+
+                    var borrowingPage = data.page;
+                    var borrowings = borrowingPage.data;
+
+                    $.each(borrowings, function (i, borrowing) {
+                        tableContent += '<tr>';
+                        tableContent += '<td>' + (i + 1) + '</td>';
+                        tableContent += '<td>' + borrowing.borrower + '</td>';
+                        tableContent += '<td>' + borrowing.ileno + '</td>';
+                        if (borrowing.state == 0) {
+                            tableContent += '<td>待审批</td>';
+                        } else if (borrowing.state == 3) {
+                            tableContent += '<td>待签收</td>';
+                        }
+                        tableContent += '<td>';
+                        if (borrowing.state == 0) {
+                            tableContent += '<button type="button" onclick="toGetBorrowing(' + borrowing.borrowingno + ')" class="btn btn-success btn-xs"><i class=" glyphicon glyphicon-check"></i></button>';
+                        }
+                        if (borrowing.state == 3) {
+                            tableContent += '<button type="button" onclick="toGetBorrowing1(' + borrowing.borrowingno + ')" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                        }
+                        tableContent += '</td>';
+                        tableContent += '</tr>';
+                    })
+
+                    //如果不是第一页就会显示出上一页
+                    if (page > 1) {
+                        pageContent += '<li><a href="#" onclick="queryPage(' + (page - 1) + ')">上一页</a></li>';
+                    }
+
+                    //显示出所有的页码
+                    for (var i = 1; i <= borrowingPage.totalPage; i++) {
+                        if (page == i) {
+                            pageContent += '<li class="active"><a href="#">' + i + '</a></li>';
+                        } else {
+                            pageContent += '<li><a href="#" onclick="queryPage(' + i + ')">' + i + '</a></li>';
+                        }
+                    }
+
+                    //如果不是最后一页显示下一页
+                    if (page < borrowingPage.totalPage) {
+                        pageContent += '<li><a href="#" onclick="queryPage(' + (page + 1) + ')">下一页</a></li>';
+                    }
+
+                    //将页面添加
+                    $('#borrowingData').html(tableContent);
+                    $('.pagination').html(pageContent);
+                }
+            }
+        })
+    }
+
+    //跳转到审批页面
+    function toGetBorrowing(borrowingno) {
+
+        location.href = "/ConvenientOfficeSystem/archive/approval/" + borrowingno;
+    }
+
+    //跳转到签收页面
+    function toGetBorrowing1(borrowingno) {
+
+
+        //请求后端
+        location.href = "/ConvenientOfficeSystem/archive/signon/" + borrowingno;
+    }
+
+</script>
+</body>
+</html>

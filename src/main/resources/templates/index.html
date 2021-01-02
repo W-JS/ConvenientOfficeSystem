@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>协同办公平台</title>
+    <link rel="stylesheet" th:href="@{/css/me.css}">
+    <link rel="stylesheet" th:href="@{/css/semantic.min.css}">
+    <link rel="stylesheet" th:href="@{/css/me.css}">
+    <link rel='stylesheet prefetch'
+          href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/components/icon.min.css'>
+    <link rel="stylesheet" th:href="@{/css/notice/bootstrap-4.3.1.min.css}" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/notice/notice.css}">
+</head>
+<body>
+<!-- 导航 -->
+    <nav class="ui inverted attached segment m-padded-tp-mini m-shadow-small" th:fragment="header">
+        <div class="ui container">
+            <div class="ui inverted secondary stackable menu">
+                <h2 class="ui white header item m-margin-l-large">协同办公系统</h2>
+                <a href="/ConvenientOfficeSystem/user/SendFileIndex" class="m-item item m-mobile-hide"><i class="copy icon"></i>发文办理</a>
+                <a href="/ConvenientOfficeSystem/EnreRFile/toRFileindex" class="m-item item m-mobile-hide"><i class="folder icon"></i>收文办理</a>
+                <a href="/ConvenientOfficeSystem/meetingindex" class="m-item item m-mobile-hide"><i class="users icon"></i>会议管理</a>
+                <a href="/ConvenientOfficeSystem/archive/index" class="m-item item m-mobile-hide"><i class="save icon"></i>档案管理</a>
+                <a th:href="@{/notice/noticeIndex}" class="m-item item m-mobile-hide"><i class="bullhorn icon"></i>公告管理</a>
+                <a href="#" class="m-item item m-mobile-hide"><i class="calendar alternate icon"></i>个人助理</a>
+                <a href="/ConvenientOfficeSystem/user/manager" class="m-item item m-mobile-hide"><i class="sun  icon"></i>系统管理</a>
+                <label class="m-item item m-mobile-hide m-margin-l-normal">欢迎你!&nbsp[[${name}]]</label>
+                <a href="/ConvenientOfficeSystem/user/logout" class="m-item item m-mobile-hide m-margin-lr-large">注销</a>
+            </div>
+        </div>
+        <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+            <i class="sidebar icon"></i>
+        </a>
+    </nav>
+
+    <!-- 内容 -->
+    <div class="main">
+        <div class="container">
+            <!-- 公告列表 -->
+            <ul class="list-unstyled">
+                <h3 class="text-center text-info border-bottom pb-3">公&nbsp;&nbsp;告</h3>
+                <li class="media pb-3 pt-3 mb-3 border-bottom" th:each="map:${notices}">
+                    <div class="media-body">
+                        <h4 class="mt-0 mb-3">
+                            <a th:href="@{/user/detail(current=${noticePageUtil.current},noticeno=${map.notice.noticeno})}" th:utext="${map.notice.topic}">公告</a>
+                        </h4>
+                        <div class="text-muted font-size-12">
+                            <u class="mr-3" th:utext="${map.notice.publishngmaker}">寒江雪</u> <u class="mr-3" th:utext="${map.notice.deaprtment}">研发部</u> 发布于 <b th:text="${#dates.format(map.notice.publishingtime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <!-- 分页 -->
+            <nav th:replace="/notice/noticeIndex::pagination"></nav>
+        </div>
+    </div>
+
+<!--<footer class="ui inverted vertical segment m-paded-tp-massive" style="margin-top: 650px" id="demo">-->
+<!--    <div class="ui center aligned container">-->
+<!--&lt;!&ndash;        <div class="ui inverted section divider"></div>&ndash;&gt;-->
+<!--        <p class="m-text-thin m-text-spaced m-opacity-tiny">© Copyright 2020. 三寸小屋的犄角旮旯 All Rights Reserved. </p>-->
+<!--    </div>-->
+<!--</footer>-->
+
+</body>
+</html>

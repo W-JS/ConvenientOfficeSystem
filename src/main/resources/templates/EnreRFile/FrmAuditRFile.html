@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="Commen/header::header(null)"></div>
+<body>
+<!--<p th:text="${#dates.format(file.sfile.draftdate,'yyyy:MM:dd hh:mm:ss')}"></p>-->
+<!--<p th:text="${file.sfile.mainto}"></p>-->
+<div class="ui container">
+    <form class="ui form segment" method="post" id="rfile" th:action="@{/EnreRFile/frmauditrfile}">
+        <p>收文审核</p>
+
+        <h4 class="ui horizontal divider header">
+            <i class="tag icon"></i>
+            收文内容
+        </h4>
+        <div class="five fields">
+            <div class="field">
+                <label>文号</label>
+                <input placeholder="文号" name="fileno" type="text" th:readonly="readonly"
+                       th:value="${file.enrerfile.fileno}">
+            </div>
+            <div class="field">
+                <label>文件标题</label>
+                <input placeholder="文件标题" name="filecaption" type="text" th:readonly="readonly"
+                       th:value="${file.enrerfile.filecaption}">
+            </div>
+            <div class="field">
+                <label>主题词</label>
+                <input placeholder="主题词" name="keyword" type="text" readonly="readonly"
+                       th:value="${file.enrerfile.keyword}">
+            </div>
+            <div class="field">
+                <label>附件标题</label>
+                <input placeholder="附件标题" name="affixcaption" type="text" readonly="readonly"
+                       th:value="${file.enrerfile.haveaffix}">
+            </div>
+            <div class="field" hidden="hidden">
+                <label>主送</label>
+                <input placeholder="主送" name="mainto" type="text" readonly="readonly" th:value="${file.mainto}">
+            </div>
+            <div class="field">
+                <label>主送</label>
+                <input placeholder="主送" name="maintoname" type="text" readonly="readonly" th:value="${file.maintoname}">
+            </div>
+            <!--            th:value="${file.mainto}"-->
+        </div>
+        <div class="three fields">
+            <div class="field">
+                <label>抄送</label>
+                <input placeholder="抄送" name="cc" type="text" readonly="readonly" th:value="${file.cc}">
+            </div>
+            <div class="field">
+                <label>密级</label>
+                <input placeholder="密级" name="confidential" type="text" readonly="readonly"
+                       th:value="${file.enrerfile.confidential}">
+            </div>
+            <div class="field">
+                <label>速级</label>
+                <input placeholder="速级" name="express" type="text" readonly="readonly"
+                       th:value="${file.enrerfile.express}">
+            </div>
+        </div>
+            <div class="field">
+                <label>文件内容</label>
+                <input placeholder="文件内容" name="filecontent" type="text" readonly="readonly" th:value="${file.filecontent}" hidden="hidden">
+                <div   th:utext="${file.filecontent}" style="border: solid 1px black; border-radius: 5px;background-color: white;padding: 8px"></div>
+            </div>
+            <div class="field">
+                <label>附件内容</label>
+                <div  th:utext="${file.affixcontent}" style="border: solid 1px black; border-radius: 5px;background-color: white;padding: 8px"></div>
+                <input hidden="hidden" placeholder="附件内容" name="affixcontent" type="text" readonly="readonly" th:value="${file.affixcontent}">
+            </div>
+<!--            <div class="field">-->
+<!--                <label>文件内容</label>-->
+<!--                <input placeholder="文件内容" name="filecontent" type="text" readonly="readonly"-->
+<!--                       th:value="${file.filecontent}">-->
+<!--            </div>-->
+<!--            <div class="field">-->
+<!--                <label>附件内容</label>-->
+<!--                <input placeholder="附件内容" name="affixcontent" type="text" readonly="readonly"-->
+<!--                       th:value="${file.affixcontent}">-->
+<!--            </div>-->
+
+            <div class="field" hidden="hidden">
+                <label>状态</label>
+                <input placeholder="状态" name="state" type="text" id="state" readonly="readonly">
+            </div>
+
+
+
+        <h4 class="ui horizontal divider header">
+            <i class="bar chart icon"></i>
+            审核内容
+        </h4>
+
+        <div class="six fields">
+            <div class="field">
+                <label>录入员</label>
+                <input placeholder="录入员" name="recorder" type="text" readonly="readonly"
+                       th:value="${file.recorderName}">
+            </div>
+            <div class="field">
+                <label>审核人</label>
+                <select name="auditor" style="pointer-events: none;">
+                    <option th:selected="${file.enrerfile.auditor eq man.account}"
+                            th:each="man:${person}" th:value="${man.account}" th:text="${man.name}"></option>
+                </select>
+            </div>
+            <div class="field">
+                <label>审核</label>
+                <input placeholder="审核" name="auditing" type="text" th:value="${file.enrerfile.auditing}">
+            </div>
+
+            <div class="field">
+                <label>拟办人单位</label>
+                <select name="draftsmandept" onchange="selectdrafGroup()" id="draftsmandept">
+                    <option th:selected="${info.departmentNo eq info.departmentNo}"
+                            th:each="info:${dept}" th:value="${info.departmentNo}"
+                            th:text="${info.departmentName}"></option>
+                </select>
+            </div>
+            <div class="field">
+                <label>拟办人</label>
+                <select name="draftsman" id="draftsman">
+                </select>
+            </div>
+
+            <div class="field">
+                <label>拟办</label>
+                <input placeholder="拟办" name="drafting" type="text" th:readonly="readonly"
+                       th:value="${file.enrerfile.drafting}">
+            </div>
+        </div>
+        <div class="six fields">
+            <div class="field">
+                <label>批办人单位</label>
+                <select name="authorizemandept" onchange="selectauthorzeGroup()" id="authorizemandept">
+                    <option th:selected="${info.departmentNo eq info.departmentNo}"
+                            th:each="info:${dept}" th:value="${info.departmentNo}"
+                            th:text="${info.departmentName}"></option>
+                </select>
+            </div>
+            <div class="field">
+                <label>批办人</label>
+                <select name="authorizeman" id="authorizeman">
+                </select>
+            </div>
+            <div class="field">
+                <label>批办</label>
+                <input placeholder="批办" name="authorizing" type="text" th:readonly="readonly"
+                       th:value="${file.enrerfile.authorizing}">
+            </div>
+
+            <div class="field">
+                <label>承办人单位</label>
+                <select name="tranpersondept" onchange="selecttranpersonGroup()" id="tranpersondept">
+                    <option th:selected="${info.departmentNo eq info.departmentNo}"
+                            th:each="info:${dept}" th:value="${info.departmentNo}"
+                            th:text="${info.departmentName}"></option>
+                </select>
+            </div>
+            <div class="field">
+                <label>承办人</label>
+                <select name="tranperson" id="tranperson">
+                </select>
+            </div>
+            <div class="field">
+                <label>承办</label>
+                <input placeholder="承办" name="transacting" type="text" th:readonly="readonly"
+                       th:value="${file.enrerfile.transacting}">
+            </div>
+        </div>
+        <div class="field">
+            <label>备注</label>
+            <input placeholder="备注" name="remark" type="text" th:readonly="readonly"
+                   th:value="${file.enrerfile.remark}">
+        </div>
+        <input hidden="hidden" th:value="${file.enrerfile.id}" name="id">
+
+        <button id="complete" class="ui primary submit button" type="submit" onclick="toComplete()">完成</button>
+        <button id="save" class="ui primary submit button" type="submit" onclick="toSave()">保存</button>
+        <a id="cancel" class="ui  button" th:href="@{/EnreRFile/frmAuditRFileList}">取消</a>
+    </form>
+
+</div>
+
+
+<script>
+    $(function () {
+
+    })
+
+    function toComplete() {
+        $('#state').val("3")
+    }
+
+    function toSave() {
+        $('#state').val("2")
+    }
+
+    function selectauthorzeGroup(){
+        var res = $("#authorizemandept").find('option:selected').text();
+        $.ajax({
+            type: "POST",
+            url: "/ConvenientOfficeSystem/EnreRFile/getDept",
+            data: res,
+            async: false,
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                console.log(data);
+                var rList = data.resultData;
+                var rSelect = "<option>—请选择审核人—</option>";
+                var erro = "<option>该部门人员信息不在系统内</option>";
+                if (rList.length > 0) {
+                    $("#complete").attr('disabled',false)
+                    $("#save").attr('disabled',false)
+                    for (var i = 0; i < rList.length; i++) {
+                        rSelect += ("<option value = '" + rList[i].account + "'>" + rList[i].name + "</option>");
+                    }
+                    $("#authorizeman").empty()
+                    $("#authorizeman").append(rSelect);
+                } else {
+                    $("#complete").attr('disabled',true)
+                    $("#save").attr('disabled',true)
+                    $("#authorizeman").empty()
+                    $("#authorizeman").append(erro);
+                }
+
+            }
+        })
+    }
+
+    function selecttranpersonGroup(){
+        var res = $("#tranpersondept").find('option:selected').text();
+        $.ajax({
+            type: "POST",
+            url: "/ConvenientOfficeSystem/EnreRFile/getDept",
+            data: res,
+            async: false,
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                console.log(data);
+                var rList = data.resultData;
+                var rSelect = "<option>—请选择审核人—</option>";
+                var erro = "<option>该部门人员信息不在系统内</option>";
+                if (rList.length > 0) {
+                    $("#complete").attr('disabled',false)
+                    $("#save").attr('disabled',false)
+                    for (var i = 0; i < rList.length; i++) {
+                        rSelect += ("<option value = '" + rList[i].account + "'>" + rList[i].name + "</option>");
+                    }
+                    $("#tranperson").empty()
+                    $("#tranperson").append(rSelect);
+                } else {
+                    $("#complete").attr('disabled',true)
+                    $("#save").attr('disabled',true)
+                    $("#tranperson").empty()
+                    $("#tranperson").append(erro);
+                }
+
+            }
+        })
+    }
+
+
+    function selectdrafGroup() {
+        //获取下拉列表中的部门
+        var res = $("#draftsmandept").find('option:selected').text();
+        $.ajax({
+            type: "POST",
+            url: "/ConvenientOfficeSystem/EnreRFile/getDept",
+            data: res,
+            async: false,
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                console.log(data);
+                var rList = data.resultData;
+                var rSelect = "<option>—请选择审核人—</option>";
+                var erro = "<option>该部门人员信息不在系统内</option>";
+                if (rList.length > 0) {
+                    $("#complete").attr('disabled',false)
+                    $("#save").attr('disabled',false)
+                    for (var i = 0; i < rList.length; i++) {
+                        rSelect += ("<option value = '" + rList[i].account + "'>" + rList[i].name + "</option>");
+                    }
+                    $("#draftsman").empty();
+                    $("#draftsman").append(rSelect);
+                } else {
+                    $("#complete").attr('disabled',true)
+                    $("#save").attr('disabled',true)
+                    $("#draftsman").empty();
+                    $("#draftsman").append(erro);
+                }
+
+            }
+        })
+    }
+
+
+</script>
+</body>
+<div th:replace="Commen/footer::footer"></div>
+</html>

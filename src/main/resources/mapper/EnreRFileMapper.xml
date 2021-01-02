@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.huat.mapper.EnreRFileMapper" >
+  <resultMap id="BaseResultMap" type="cn.huat.pojo.EnreRFile" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="fileNo" property="fileno" jdbcType="VARCHAR" />
+    <result column="receiveDate" property="receivedate" jdbcType="TIMESTAMP" />
+    <result column="senderOrgan" property="senderorgan" jdbcType="VARCHAR" />
+    <result column="fileCaption" property="filecaption" jdbcType="VARCHAR" />
+    <result column="keyWord" property="keyword" jdbcType="VARCHAR" />
+    <result column="haveAffix" property="haveaffix" jdbcType="VARCHAR" />
+    <result column="confidential" property="confidential" jdbcType="VARCHAR" />
+    <result column="express" property="express" jdbcType="VARCHAR" />
+    <result column="copies" property="copies" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="recorder" property="recorder" jdbcType="INTEGER" />
+    <result column="auditor" property="auditor" jdbcType="INTEGER" />
+    <result column="auditing" property="auditing" jdbcType="VARCHAR" />
+    <result column="draftsman" property="draftsman" jdbcType="INTEGER" />
+    <result column="drafting" property="drafting" jdbcType="VARCHAR" />
+    <result column="authorizeMan" property="authorizeman" jdbcType="INTEGER" />
+    <result column="authorizing" property="authorizing" jdbcType="VARCHAR" />
+    <result column="tranPerson" property="tranperson" jdbcType="INTEGER" />
+    <result column="transacting" property="transacting" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="receiver" property="receiver" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, fileNo, receiveDate, senderOrgan, fileCaption, keyWord, haveAffix, confidential,
+    express, copies, state, recorder, auditor, auditing, draftsman, drafting, authorizeMan,
+    authorizing, tranPerson, transacting, remark, receiver
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from EnreRFile
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+
+
+  <!--改-->
+  <select id="selectByStateAndReceiver" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select * from EnreRFile where state = #{state} AND receiver=#{receiver}
+  </select>
+
+  <select id="selectByStateAndId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from EnreRFile
+    where state = #{state,jdbcType=VARCHAR} AND recorder=#{id}
+  </select>
+
+  <select id="selectByStateAndAudit" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from EnreRFile
+    where state = #{state,jdbcType=VARCHAR} AND auditor=#{auditor}
+  </select>
+
+  <select id="selectByStateAndDraftsman" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from EnreRFile
+    where state = #{state,jdbcType=VARCHAR} AND draftsman=#{draftsman}
+  </select>
+
+  <select id="selectByStateAndAuthorizeman" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from EnreRFile
+    where state = #{state,jdbcType=VARCHAR} AND authorizeMan=#{authorizeMan}
+  </select>
+
+  <select id="selectByStateAndTranPerson" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from EnreRFile
+    where state = #{state,jdbcType=VARCHAR} AND tranPerson=#{tranPerson}
+  </select>
+
+
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from EnreRFile
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="cn.huat.pojo.EnreRFile" >
+    insert into EnreRFile (id, fileNo, receiveDate,
+      senderOrgan, fileCaption, keyWord,
+      haveAffix, confidential, express,
+      copies, state, recorder,
+      auditor, auditing, draftsman,
+      drafting, authorizeMan, authorizing,
+      tranPerson, transacting, remark,
+      receiver)
+    values (#{id,jdbcType=VARCHAR}, #{fileno,jdbcType=VARCHAR}, #{receivedate,jdbcType=TIMESTAMP},
+      #{senderorgan,jdbcType=VARCHAR}, #{filecaption,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR},
+      #{haveaffix,jdbcType=VARCHAR}, #{confidential,jdbcType=VARCHAR}, #{express,jdbcType=VARCHAR},
+      #{copies,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, #{recorder,jdbcType=INTEGER},
+      #{auditor,jdbcType=INTEGER}, #{auditing,jdbcType=VARCHAR}, #{draftsman,jdbcType=INTEGER},
+      #{drafting,jdbcType=VARCHAR}, #{authorizeman,jdbcType=INTEGER}, #{authorizing,jdbcType=VARCHAR},
+      #{tranperson,jdbcType=INTEGER}, #{transacting,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+      #{receiver,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.huat.pojo.EnreRFile" >
+    insert into EnreRFile
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="fileno != null" >
+        fileNo,
+      </if>
+      <if test="receivedate != null" >
+        receiveDate,
+      </if>
+      <if test="senderorgan != null" >
+        senderOrgan,
+      </if>
+      <if test="filecaption != null" >
+        fileCaption,
+      </if>
+      <if test="keyword != null" >
+        keyWord,
+      </if>
+      <if test="haveaffix != null" >
+        haveAffix,
+      </if>
+      <if test="confidential != null" >
+        confidential,
+      </if>
+      <if test="express != null" >
+        express,
+      </if>
+      <if test="copies != null" >
+        copies,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="recorder != null" >
+        recorder,
+      </if>
+      <if test="auditor != null" >
+        auditor,
+      </if>
+      <if test="auditing != null" >
+        auditing,
+      </if>
+      <if test="draftsman != null" >
+        draftsman,
+      </if>
+      <if test="drafting != null" >
+        drafting,
+      </if>
+      <if test="authorizeman != null" >
+        authorizeMan,
+      </if>
+      <if test="authorizing != null" >
+        authorizing,
+      </if>
+      <if test="tranperson != null" >
+        tranPerson,
+      </if>
+      <if test="transacting != null" >
+        transacting,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="receiver != null" >
+        receiver,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="fileno != null" >
+        #{fileno,jdbcType=VARCHAR},
+      </if>
+      <if test="receivedate != null" >
+        #{receivedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="senderorgan != null" >
+        #{senderorgan,jdbcType=VARCHAR},
+      </if>
+      <if test="filecaption != null" >
+        #{filecaption,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="haveaffix != null" >
+        #{haveaffix,jdbcType=VARCHAR},
+      </if>
+      <if test="confidential != null" >
+        #{confidential,jdbcType=VARCHAR},
+      </if>
+      <if test="express != null" >
+        #{express,jdbcType=VARCHAR},
+      </if>
+      <if test="copies != null" >
+        #{copies,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="recorder != null" >
+        #{recorder,jdbcType=INTEGER},
+      </if>
+      <if test="auditor != null" >
+        #{auditor,jdbcType=INTEGER},
+      </if>
+      <if test="auditing != null" >
+        #{auditing,jdbcType=VARCHAR},
+      </if>
+      <if test="draftsman != null" >
+        #{draftsman,jdbcType=INTEGER},
+      </if>
+      <if test="drafting != null" >
+        #{drafting,jdbcType=VARCHAR},
+      </if>
+      <if test="authorizeman != null" >
+        #{authorizeman,jdbcType=INTEGER},
+      </if>
+      <if test="authorizing != null" >
+        #{authorizing,jdbcType=VARCHAR},
+      </if>
+      <if test="tranperson != null" >
+        #{tranperson,jdbcType=INTEGER},
+      </if>
+      <if test="transacting != null" >
+        #{transacting,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="receiver != null" >
+        #{receiver,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.huat.pojo.EnreRFile" >
+    update EnreRFile
+    <set >
+      <if test="fileno != null" >
+        fileNo = #{fileno,jdbcType=VARCHAR},
+      </if>
+      <if test="receivedate != null" >
+        receiveDate = #{receivedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="senderorgan != null" >
+        senderOrgan = #{senderorgan,jdbcType=VARCHAR},
+      </if>
+      <if test="filecaption != null" >
+        fileCaption = #{filecaption,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        keyWord = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="haveaffix != null" >
+        haveAffix = #{haveaffix,jdbcType=VARCHAR},
+      </if>
+      <if test="confidential != null" >
+        confidential = #{confidential,jdbcType=VARCHAR},
+      </if>
+      <if test="express != null" >
+        express = #{express,jdbcType=VARCHAR},
+      </if>
+      <if test="copies != null" >
+        copies = #{copies,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="recorder != null" >
+        recorder = #{recorder,jdbcType=INTEGER},
+      </if>
+      <if test="auditor != null" >
+        auditor = #{auditor,jdbcType=INTEGER},
+      </if>
+      <if test="auditing != null" >
+        auditing = #{auditing,jdbcType=VARCHAR},
+      </if>
+      <if test="draftsman != null" >
+        draftsman = #{draftsman,jdbcType=INTEGER},
+      </if>
+      <if test="drafting != null" >
+        drafting = #{drafting,jdbcType=VARCHAR},
+      </if>
+      <if test="authorizeman != null" >
+        authorizeMan = #{authorizeman,jdbcType=INTEGER},
+      </if>
+      <if test="authorizing != null" >
+        authorizing = #{authorizing,jdbcType=VARCHAR},
+      </if>
+      <if test="tranperson != null" >
+        tranPerson = #{tranperson,jdbcType=INTEGER},
+      </if>
+      <if test="transacting != null" >
+        transacting = #{transacting,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="receiver != null" >
+        receiver = #{receiver,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.huat.pojo.EnreRFile" >
+    update EnreRFile
+    set fileNo = #{fileno,jdbcType=VARCHAR},
+      receiveDate = #{receivedate,jdbcType=TIMESTAMP},
+      senderOrgan = #{senderorgan,jdbcType=VARCHAR},
+      fileCaption = #{filecaption,jdbcType=VARCHAR},
+      keyWord = #{keyword,jdbcType=VARCHAR},
+      haveAffix = #{haveaffix,jdbcType=VARCHAR},
+      confidential = #{confidential,jdbcType=VARCHAR},
+      express = #{express,jdbcType=VARCHAR},
+      copies = #{copies,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      recorder = #{recorder,jdbcType=INTEGER},
+      auditor = #{auditor,jdbcType=INTEGER},
+      auditing = #{auditing,jdbcType=VARCHAR},
+      draftsman = #{draftsman,jdbcType=INTEGER},
+      drafting = #{drafting,jdbcType=VARCHAR},
+      authorizeMan = #{authorizeman,jdbcType=INTEGER},
+      authorizing = #{authorizing,jdbcType=VARCHAR},
+      tranPerson = #{tranperson,jdbcType=INTEGER},
+      transacting = #{transacting,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      receiver = #{receiver,jdbcType=INTEGER}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <!--  程根-->
+  <select id="selectByState" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from EnreRFile
+    where state = 6
+  </select>
+
+  <!--  程根-->
+  <select id="selectFileByFileNo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from EnreRFile
+    where fileNo = #{fileno,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

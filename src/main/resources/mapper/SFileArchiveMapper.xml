@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.huat.mapper.SFileArchiveMapper" >
+  <resultMap id="BaseResultMap" type="cn.huat.pojo.SFileArchive" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="fileNo" property="fileno" jdbcType="VARCHAR" />
+    <result column="fileCaption" property="filecaption" jdbcType="VARCHAR" />
+    <result column="keyWord" property="keyword" jdbcType="VARCHAR" />
+    <result column="mainTo" property="mainto" jdbcType="INTEGER" />
+    <result column="CC" property="cc" jdbcType="VARCHAR" />
+    <result column="confidential" property="confidential" jdbcType="VARCHAR" />
+    <result column="express" property="express" jdbcType="VARCHAR" />
+    <result column="closeingDate" property="closeingdate" jdbcType="TIMESTAMP" />
+    <result column="fileContent" property="filecontent" jdbcType="VARCHAR" />
+    <result column="affixContent" property="affixcontent" jdbcType="VARCHAR" />
+    <result column="draftsMan" property="draftsman" jdbcType="INTEGER" />
+    <result column="affixCaption" property="affixcaption" jdbcType="VARCHAR" />
+    <result column="archiveNo" property="archiveno" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, fileNo, fileCaption, keyWord, mainTo, CC, confidential, express, closeingDate, 
+    fileContent, affixContent, draftsMan, affixCaption, archiveNo
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SFileArchive
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SFileArchive
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByFileNo" parameterType="java.lang.String" >
+    delete from SFileArchive
+    where fileNo = #{fileno,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.huat.pojo.SFileArchive" >
+    insert into SFileArchive (id, fileNo, fileCaption, 
+      keyWord, mainTo, CC, 
+      confidential, express, closeingDate, 
+      fileContent, affixContent, draftsMan, 
+      affixCaption, archiveNo)
+    values (#{id,jdbcType=VARCHAR}, #{fileno,jdbcType=VARCHAR}, #{filecaption,jdbcType=VARCHAR}, 
+      #{keyword,jdbcType=VARCHAR}, #{mainto,jdbcType=INTEGER}, #{cc,jdbcType=VARCHAR}, 
+      #{confidential,jdbcType=VARCHAR}, #{express,jdbcType=VARCHAR}, #{closeingdate,jdbcType=TIMESTAMP}, 
+      #{filecontent,jdbcType=VARCHAR}, #{affixcontent,jdbcType=VARCHAR}, #{draftsman,jdbcType=INTEGER}, 
+      #{affixcaption,jdbcType=VARCHAR}, #{archiveno,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.huat.pojo.SFileArchive" >
+    insert into SFileArchive
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="fileno != null" >
+        fileNo,
+      </if>
+      <if test="filecaption != null" >
+        fileCaption,
+      </if>
+      <if test="keyword != null" >
+        keyWord,
+      </if>
+      <if test="mainto != null" >
+        mainTo,
+      </if>
+      <if test="cc != null" >
+        CC,
+      </if>
+      <if test="confidential != null" >
+        confidential,
+      </if>
+      <if test="express != null" >
+        express,
+      </if>
+      <if test="closeingdate != null" >
+        closeingDate,
+      </if>
+      <if test="filecontent != null" >
+        fileContent,
+      </if>
+      <if test="affixcontent != null" >
+        affixContent,
+      </if>
+      <if test="draftsman != null" >
+        draftsMan,
+      </if>
+      <if test="affixcaption != null" >
+        affixCaption,
+      </if>
+      <if test="archiveno != null" >
+        archiveNo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="fileno != null" >
+        #{fileno,jdbcType=VARCHAR},
+      </if>
+      <if test="filecaption != null" >
+        #{filecaption,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="mainto != null" >
+        #{mainto,jdbcType=INTEGER},
+      </if>
+      <if test="cc != null" >
+        #{cc,jdbcType=VARCHAR},
+      </if>
+      <if test="confidential != null" >
+        #{confidential,jdbcType=VARCHAR},
+      </if>
+      <if test="express != null" >
+        #{express,jdbcType=VARCHAR},
+      </if>
+      <if test="closeingdate != null" >
+        #{closeingdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="filecontent != null" >
+        #{filecontent,jdbcType=VARCHAR},
+      </if>
+      <if test="affixcontent != null" >
+        #{affixcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="draftsman != null" >
+        #{draftsman,jdbcType=INTEGER},
+      </if>
+      <if test="affixcaption != null" >
+        #{affixcaption,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveno != null" >
+        #{archiveno,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.huat.pojo.SFileArchive" >
+    update SFileArchive
+    <set >
+      <if test="fileno != null" >
+        fileNo = #{fileno,jdbcType=VARCHAR},
+      </if>
+      <if test="filecaption != null" >
+        fileCaption = #{filecaption,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        keyWord = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="mainto != null" >
+        mainTo = #{mainto,jdbcType=INTEGER},
+      </if>
+      <if test="cc != null" >
+        CC = #{cc,jdbcType=VARCHAR},
+      </if>
+      <if test="confidential != null" >
+        confidential = #{confidential,jdbcType=VARCHAR},
+      </if>
+      <if test="express != null" >
+        express = #{express,jdbcType=VARCHAR},
+      </if>
+      <if test="closeingdate != null" >
+        closeingDate = #{closeingdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="filecontent != null" >
+        fileContent = #{filecontent,jdbcType=VARCHAR},
+      </if>
+      <if test="affixcontent != null" >
+        affixContent = #{affixcontent,jdbcType=VARCHAR},
+      </if>
+      <if test="draftsman != null" >
+        draftsMan = #{draftsman,jdbcType=INTEGER},
+      </if>
+      <if test="affixcaption != null" >
+        affixCaption = #{affixcaption,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveno != null" >
+        archiveNo = #{archiveno,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.huat.pojo.SFileArchive" >
+    update SFileArchive
+    set fileNo = #{fileno,jdbcType=VARCHAR},
+      fileCaption = #{filecaption,jdbcType=VARCHAR},
+      keyWord = #{keyword,jdbcType=VARCHAR},
+      mainTo = #{mainto,jdbcType=INTEGER},
+      CC = #{cc,jdbcType=VARCHAR},
+      confidential = #{confidential,jdbcType=VARCHAR},
+      express = #{express,jdbcType=VARCHAR},
+      closeingDate = #{closeingdate,jdbcType=TIMESTAMP},
+      fileContent = #{filecontent,jdbcType=VARCHAR},
+      affixContent = #{affixcontent,jdbcType=VARCHAR},
+      draftsMan = #{draftsman,jdbcType=INTEGER},
+      affixCaption = #{affixcaption,jdbcType=VARCHAR},
+      archiveNo = #{archiveno,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectSFileArchiveByArchiveno" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from SFileArchive
+    where archiveno = #{archiveno,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

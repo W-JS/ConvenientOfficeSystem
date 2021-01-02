@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.huat.mapper.UserMapper" >
+  <resultMap id="BaseResultMap" type="cn.huat.pojo.User" >
+    <id column="account" property="account" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="department" property="department" jdbcType="VARCHAR" />
+    <result column="occupation" property="occupation" jdbcType="VARCHAR" />
+    <result column="accessAuthority" property="accessauthority" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    account, name, department, occupation, accessAuthority, password
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_user
+    where account = #{account,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_user
+    where account = #{account,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.huat.pojo.User" >
+    insert into tb_user (account, name, department, 
+      occupation, accessAuthority, password
+      )
+    values (#{account,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, 
+      #{occupation,jdbcType=VARCHAR}, #{accessauthority,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.huat.pojo.User" >
+    insert into tb_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="account != null" >
+        account,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="department != null" >
+        department,
+      </if>
+      <if test="occupation != null" >
+        occupation,
+      </if>
+      <if test="accessauthority != null" >
+        accessAuthority,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="account != null" >
+        #{account,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="occupation != null" >
+        #{occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="accessauthority != null" >
+        #{accessauthority,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.huat.pojo.User" >
+    update tb_user
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null" >
+        department = #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="occupation != null" >
+        occupation = #{occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="accessauthority != null" >
+        accessAuthority = #{accessauthority,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where account = #{account,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.huat.pojo.User" >
+    update tb_user
+    set name = #{name,jdbcType=VARCHAR},
+      department = #{department,jdbcType=VARCHAR},
+      occupation = #{occupation,jdbcType=VARCHAR},
+      accessAuthority = #{accessauthority,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR}
+    where account = #{account,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectAllUserByPage" resultMap="BaseResultMap">
+    SELECT * FROM tb_user WHERE tb_user.department=#{userDepartment} ORDER BY account LIMIT #{index},#{size}
+  </select>
+
+  <select id="selectAllCountByUserDepartment" resultType="java.lang.Integer" >
+    select count(*) from tb_user where tb_user.department = #{userDepartment}
+  </select>
+
+
+    <delete id="deleteUserByUserId" parameterType="java.lang.Integer">
+    delete from tb_user where tb_user.account = #{userId}
+  </delete>
+
+  <update id="updateUserInfoByAccount" parameterType="com.alibaba.fastjson.JSONObject">
+    update tb_user set name = #{name},department = #{department},occupation = #{occupation} where account = #{userId}
+  </update>
+<!--  新增  -->
+  <select id="findUserByOccupation" resultType="cn.huat.pojo.User" parameterType="java.lang.String">
+       select * from tb_user where occupation = #{occupation,jdbcType=VARCHAR}
+  </select>
+  <select id="findAll" resultType="cn.huat.pojo.User">
+      select name,account from tb_user
+    </select>
+    <select id="findUserAndDept" resultMap="BaseResultMap">
+       select name,department,account from tb_user
+    </select>
+  <select id="findByDept" resultType="java.lang.Integer" parameterType="java.lang.String">
+    select account from tb_user where department = #{department,jdbcType=VARCHAR} and occupation='主任'
+  </select>
+
+
+
+  <!--邵传中-->
+
+  <select id="selectByDept" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from tb_user
+    where department = #{dept}
+  </select>
+  <select id="getNameByNo" resultType="java.lang.String" parameterType="java.lang.Integer">
+    select name from tb_user where account = #{no}
+  </select>
+</mapper>

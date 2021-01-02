@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.huat.mapper.MinuteMapper" >
+  <resultMap id="BaseResultMap" type="cn.huat.pojo.Minute" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="meetingSerialNo" property="meetingserialno" jdbcType="VARCHAR" />
+    <result column="meetingName" property="meetingname" jdbcType="VARCHAR" />
+    <result column="fileNo" property="fileno" jdbcType="VARCHAR" />
+    <result column="fileCaption" property="filecaption" jdbcType="VARCHAR" />
+    <result column="keyWord" property="keyword" jdbcType="VARCHAR" />
+    <result column="chiefOrganizer" property="chieforganizer" jdbcType="INTEGER" />
+    <result column="meetingLocus" property="meetinglocus" jdbcType="VARCHAR" />
+    <result column="startTime" property="starttime" jdbcType="TIMESTAMP" />
+    <result column="endTime" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="attendee" property="attendee" jdbcType="VARCHAR" />
+    <result column="topicAndArgumentation" property="topicandargumentation" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, meetingSerialNo, meetingName, fileNo, fileCaption, keyWord, chiefOrganizer, meetingLocus, 
+    startTime, endTime, attendee, topicAndArgumentation
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from Minute
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from Minute
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.huat.pojo.Minute" >
+    insert into Minute (id, meetingSerialNo, meetingName, 
+      fileNo, fileCaption, keyWord, 
+      chiefOrganizer, meetingLocus, startTime, 
+      endTime, attendee, topicAndArgumentation
+      )
+    values (#{id,jdbcType=INTEGER}, #{meetingserialno,jdbcType=VARCHAR}, #{meetingname,jdbcType=VARCHAR}, 
+      #{fileno,jdbcType=VARCHAR}, #{filecaption,jdbcType=VARCHAR}, #{keyword,jdbcType=VARCHAR}, 
+      #{chieforganizer,jdbcType=INTEGER}, #{meetinglocus,jdbcType=VARCHAR}, #{starttime,jdbcType=TIMESTAMP}, 
+      #{endtime,jdbcType=TIMESTAMP}, #{attendee,jdbcType=VARCHAR}, #{topicandargumentation,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.huat.pojo.Minute" >
+    insert into Minute
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="meetingserialno != null" >
+        meetingSerialNo,
+      </if>
+      <if test="meetingname != null" >
+        meetingName,
+      </if>
+      <if test="fileno != null" >
+        fileNo,
+      </if>
+      <if test="filecaption != null" >
+        fileCaption,
+      </if>
+      <if test="keyword != null" >
+        keyWord,
+      </if>
+      <if test="chieforganizer != null" >
+        chiefOrganizer,
+      </if>
+      <if test="meetinglocus != null" >
+        meetingLocus,
+      </if>
+      <if test="starttime != null" >
+        startTime,
+      </if>
+      <if test="endtime != null" >
+        endTime,
+      </if>
+      <if test="attendee != null" >
+        attendee,
+      </if>
+      <if test="topicandargumentation != null" >
+        topicAndArgumentation,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="meetingserialno != null" >
+        #{meetingserialno,jdbcType=VARCHAR},
+      </if>
+      <if test="meetingname != null" >
+        #{meetingname,jdbcType=VARCHAR},
+      </if>
+      <if test="fileno != null" >
+        #{fileno,jdbcType=VARCHAR},
+      </if>
+      <if test="filecaption != null" >
+        #{filecaption,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="chieforganizer != null" >
+        #{chieforganizer,jdbcType=INTEGER},
+      </if>
+      <if test="meetinglocus != null" >
+        #{meetinglocus,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="attendee != null" >
+        #{attendee,jdbcType=VARCHAR},
+      </if>
+      <if test="topicandargumentation != null" >
+        #{topicandargumentation,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.huat.pojo.Minute" >
+    update Minute
+    <set >
+      <if test="meetingserialno != null" >
+        meetingSerialNo = #{meetingserialno,jdbcType=VARCHAR},
+      </if>
+      <if test="meetingname != null" >
+        meetingName = #{meetingname,jdbcType=VARCHAR},
+      </if>
+      <if test="fileno != null" >
+        fileNo = #{fileno,jdbcType=VARCHAR},
+      </if>
+      <if test="filecaption != null" >
+        fileCaption = #{filecaption,jdbcType=VARCHAR},
+      </if>
+      <if test="keyword != null" >
+        keyWord = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="chieforganizer != null" >
+        chiefOrganizer = #{chieforganizer,jdbcType=INTEGER},
+      </if>
+      <if test="meetinglocus != null" >
+        meetingLocus = #{meetinglocus,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        startTime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        endTime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="attendee != null" >
+        attendee = #{attendee,jdbcType=VARCHAR},
+      </if>
+      <if test="topicandargumentation != null" >
+        topicAndArgumentation = #{topicandargumentation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.huat.pojo.Minute" >
+    update Minute
+    set meetingSerialNo = #{meetingserialno,jdbcType=VARCHAR},
+      meetingName = #{meetingname,jdbcType=VARCHAR},
+      fileNo = #{fileno,jdbcType=VARCHAR},
+      fileCaption = #{filecaption,jdbcType=VARCHAR},
+      keyWord = #{keyword,jdbcType=VARCHAR},
+      chiefOrganizer = #{chieforganizer,jdbcType=INTEGER},
+      meetingLocus = #{meetinglocus,jdbcType=VARCHAR},
+      startTime = #{starttime,jdbcType=TIMESTAMP},
+      endTime = #{endtime,jdbcType=TIMESTAMP},
+      attendee = #{attendee,jdbcType=VARCHAR},
+      topicAndArgumentation = #{topicandargumentation,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from Minute
+  </select>
+
+  <select id="selectByFileNo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from Minute
+    where fileNo = #{fileno, jdbcType=VARCHAR}
+  </select>
+
+  <select id="findByMinute" resultType="cn.huat.pojo.Minute" parameterType="java.lang.String">
+    select *  from  Minute where meetingSerialNo= #{meetingSerialNo,jdbcType=VARCHAR}
+  </select>
+    <select id="findCount" resultType="java.lang.Integer">
+      select count(meetingSerialNO) from Minute
+    </select>
+  <select id="findallMinutes" resultType="cn.huat.pojo.Minute">
+    select * from Minute
+  </select>
+
+</mapper>

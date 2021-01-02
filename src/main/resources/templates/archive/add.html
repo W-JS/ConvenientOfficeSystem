@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" th:href="@{../bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{../css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{../css/main.css}">
+    <link rel="stylesheet" th:href="@{../css/doc.min.css}">
+    <style>
+        .tree li {
+            list-style-type: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <div><a class="navbar-brand" style="font-size:32px;" href="user.html">用户维护</a></div>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-9 col-sm-offset-3 col-md-15 col-md-offset-2 main">
+            <div class="panel panel-default">
+                <div class="panel-heading">建立案卷
+                    <div style="float:right;cursor:pointer;" data-toggle="modal" data-target="#myModal">
+                        <i class="glyphicon glyphicon-question-sign"></i></div>
+                </div>
+                <div class="panel-body">
+                    <form role="form" id="archive">
+                        <div class="form-group">
+                            <label for="archiveno">卷号</label>
+                            <input type="text" class="form-control" id="archiveno" placeholder="卷号规则为年限+保存时间+文件类型(1.发文 2.收文 3.会议记录)"
+                                   onblur="checkArchiveNo()">
+                        </div>
+                        <div class="form-group">
+                            <label for="archivename">卷名</label>
+                            <input type="text" class="form-control" id="archivename" placeholder="请输入卷名" onblur="checkArchiveName()">
+                        </div>
+                        <div class="form-group">
+                            <label for="storageperiod">保管期限</label>
+                            <input type="email" class="form-control" id="storageperiod" placeholder="请输入保管期限"
+                                   value="120" readonly="readonly">
+                        </div>
+                        <div class="form-group">
+                            <label for="capacity">文件容量</label>
+                            <input type="email" class="form-control" id="capacity" placeholder="请输入卷内文件容量"
+                                    value="30" onblur="checkCapacity()">
+                        </div>
+                        <div class="form-group">
+                            <label>是否封卷:</label>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="1">
+                                    封卷
+                                </label>
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="2" checked>
+                                    不封卷
+                                </label>
+                            </div>
+
+                        </div>
+                        <button type="button" class="btn btn-success" id="btn1"><i class="glyphicon glyphicon-plus"></i>
+                            建立
+                        </button>
+                        <button type="button" class="btn btn-danger" id="btn2"><i
+                                class="glyphicon glyphicon-refresh"></i> 放弃
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/jquery-2.1.1.min.js}"></script>
+<script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/docs.min.js}"></script>
+<script th:src="@{/layer/layer.js}"></script>
+
+<script type="text/javascript">
+    var flag = false;
+    var flag1 = false;
+    var flag2 = false;
+    $(function () {
+        $(".list-group-item").click(function () {
+            if ($(this).find("ul")) {
+                $(this).toggleClass("tree-closed");
+                if ($(this).hasClass("tree-closed")) {
+                    $("ul", this).hide("fast");
+                } else {
+                    $("ul", this).show("fast");
+                }
+            }
+        });
+        $("#btn1").click(function () {
+            if (flag == false || flag1 == false || flag2 == false) {
+                layer.msg("信息不符合规范,请修改信息", {time: 2000, icon: 5, shift: 6}, function () {
+                });
+                return;
+            }
+            var archiveno = $("#archiveno").val();
+            var archivename = $("#archivename").val();
+            var storageperiod = $("#storageperiod").val();
+            var capacity = $("#capacity").val();
+
+            var option;
+            if ($("#optionsRadios1").is(":checked")) {
+                option = $("#optionsRadios1").val();
+                alert(option);
+            } else {
+                option = $("#optionsRadios2").val();
+                alert(option);
+            }
+
+            if (archiveno.length == 0 && archivename.length == 0) {
+                layer.msg("案卷号或案卷名不能为空", {time: 2000, icon: 5, shift: 6}, function () {
+
+                });
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/ConvenientOfficeSystem/archive/doadd",
+                data: {
+                    'archiveno': archiveno,
+                    'archivename': archivename,
+                    'storageperiod': storageperiod,
+                    'capacity': capacity,
+                    'closeornot': option
+                },
+                success: function (data) {
+                    if (data.success) {
+                        layer.msg("案卷信息保存成功", {time: 1000, icon: 6}, function () {
+                            flag = false;
+                            flag1 = false;
+                            flag2 = false;
+                            window.location.href = "index";
+                        });
+                    } else {
+                        layer.msg("案卷信息保存失败", {time: 2000, icon: 5, shift: 6}, function () {
+
+                        });
+                        flag = false;
+                        flag1 = false;
+                        flag2 = false;
+                    }
+                }
+            })
+        });
+
+        $("#btn2").click(function () {
+            layer.confirm('确定放弃建立案卷吗?',
+                {icon: 3, title: '系统提示'},
+                function () {
+                    location.href = "/ConvenientOfficeSystem/archive/index";
+                }
+            )
+        })
+    });
+
+    function checkArchiveNo() {
+        var archiveno = $('#archiveno').val();
+        var patt = /^2[0-2]\d{3}[1-3]$/;
+        if (patt.test(archiveno)) {
+            $.ajax({
+                type: "GET",
+                url: "/ConvenientOfficeSystem/archive/getarchive",
+                data: {
+                    'archiveno': archiveno,
+                },
+                success: function (data) {
+                    if (data.success) {
+                        flag = true;
+                    } else {
+                        layer.msg("文卷号已经存在", {time: 2000, icon: 5, shift: 6}, function () {
+
+                        });
+                        flag = false;
+                    }
+                }
+            })
+        } else {
+            layer.msg("文卷号必须按照指定规则", {time: 2000, icon: 5, shift: 6}, function () {
+
+            });
+        }
+    }
+
+    function checkArchiveName() {
+        var archivename = $('#archivename').val();
+        if (archivename.length != '') {
+            $.ajax({
+                type: "GET",
+                url: "/ConvenientOfficeSystem/archive/getarchive1",
+                data: {
+                    'archivename': archivename,
+                },
+                success: function (data) {
+                    if (data.success) {
+                        flag1 = true;
+                    } else {
+                        layer.msg("文卷名已经存在", {time: 2000, icon: 5, shift: 6}, function () {
+
+                        });
+                        flag1 = false;
+                    }
+                }
+            })
+        } else {
+            layer.msg("文卷名不能为空", {time: 2000, icon: 5, shift: 6}, function () {
+
+            });
+        }
+    }
+
+    function checkCapacity() {
+        var capacity = $('#capacity').val();
+        var patt = /^[1-9][0-9]$/;
+        if (patt.test(capacity)) {
+            flag2 = true;
+        } else {
+            layer.msg("容量不能低于10,且超过99", {time: 2000, icon: 5, shift: 6}, function () {
+
+            });
+            flag2 = false;
+        }
+    }
+</script>
+</body>
+</html>

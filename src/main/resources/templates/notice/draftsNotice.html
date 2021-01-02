@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="icon" type="image/x-icon" th:href="@{/images/notice.ico}">
+        <link rel="stylesheet" th:href="@{/css/notice/bootstrap-4.3.1.min.css}" crossorigin="anonymous">
+        <link rel="stylesheet" th:href="@{/css/notice/notice.css}">
+        <title>公告管理模块-草稿箱</title>
+    </head>
+    <body>
+        <div class="nk-container">
+            <!-- 头部 -->
+            <header th:replace="/notice/noticeIndex::header"></header>
+
+            <!-- 内容 -->
+            <div class="main">
+                <div class="container">
+                    <!-- 公告列表 -->
+                    <ul class="list-unstyled">
+                        <h3 class="text-center text-info border-bottom pb-3">草&nbsp;&nbsp;稿&nbsp;&nbsp;箱</h3>
+                        <li class="media pb-3 pt-3 mb-3 border-bottom" th:each="map:${notices}">
+                            <div class="media-body">
+                                <h4 class="mt-0 mb-3">
+                                    <a th:href="@{/notice/drafts(current=${noticePageUtil.current},noticeno=${map.notice.noticeno})}" th:utext="${map.notice.topic}">公告</a>
+                                </h4>
+                                <div class="text-muted font-size-12">
+                                    <u class="mr-3" th:utext="${map.notice.publishngmaker}">寒江雪</u> <u class="mr-3" th:utext="${map.notice.deaprtment}">研发部</u> 发布于 <b th:text="${#dates.format(map.notice.publishingtime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15 15:32:18</b>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- 分页 -->
+                    <nav th:replace="/notice/noticeIndex::pagination"></nav>
+                </div>
+            </div>
+
+            <!-- 尾部 -->
+            <footer th:replace="/notice/noticeIndex::footer"></footer>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查看会议记录</title>
+</head>
+<body>
+<h2>查看会议记录</h2>
+<form th:action="@{/minute/minuteview}" method="post">
+<!--    主键 <input type="text" th:value="${minuteview.getId()}" name="id"><br>-->
+<!--    会议序号<input type="text" th:value="${minuteview.getMeetingserialno()}" name="meetingserialno"><br>-->
+<!--    会议名称 <input type="text" th:value="${minuteview.getMeetingname()}" name="meetingname"><br>-->
+<!--    文号 <input type="text" th:value="${minuteview.getFileno()}" name="fileno"><br>-->
+<!--    文件标题<input type="text" th:value="${minuteview.getFilecaption()}" name="filecaption"><br>-->
+<!--    主题词<input type="text" th:value="${minuteview.getKeyword()}" name="keyword"><br>-->
+<!--    主持人<input name="chieforganizer"th:value="${minuteview.getChieforganizer()}" id="chieforganizer"><br>-->
+<!--    会议地点 <input type="text" th:value="${minuteview.getMeetinglocus()}" name="meetinglocus"><br>-->
+<!--   开始时间<input type="text" th:value="${minuteview.getStarttime()}" name="starttime"><br>-->
+<!--    结束时间<input type="text" th:value="${minuteview.getEndtime()}" name="endtime"><br>-->
+<!--    参加人员<input type="text" th:value="${minuteview.getAttendee()}" name="attendee"><br>-->
+<!--    主要议题及其讨论意见 <input type="text" th:value="${minuteview.getTopicandargumentation()}"name="topicandargumentation"><br>-->
+    <button type="submit">提交</button>
+
+
+</form>
+<a th:href="@{/meetingindex}">返回主界面</a>
+</body>
+</html>

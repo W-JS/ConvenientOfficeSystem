@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>协同办公平台</title>
+    <link rel="stylesheet" th:href="@{/css/me.css}">
+    <link rel="stylesheet" th:href="@{/css/semantic.min.css}">
+    <link rel="stylesheet" th:href="@{/css/me.css}">
+    <link rel='stylesheet prefetch'
+          href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/components/icon.min.css'>
+</head>
+<body>
+<!-- 导航 -->
+<nav class="ui inverted attached segment m-padded-tp-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h2 class="ui white header item m-margin-l-large">
+                <a  th:href="@{/notice/returnIndex}"
+                >协同办公系统</a></h2>
+            <a href="/ConvenientOfficeSystem/user/SendFileIndex" class="m-item item m-mobile-hide"><i class="copy icon"></i>发文办理</a>
+            <!--                </div>-->
+            <a href="/ConvenientOfficeSystem/EnreRFile/toRFileindex" class="m-item item m-mobile-hide"><i class="folder icon"></i>收文办理</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="users icon"></i>会议管理</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="save icon"></i>档案管理</a>
+            <a th:href="@{/notice/noticeIndex}" class="m-item item m-mobile-hide"><i class="bullhorn icon"></i>公告管理</a>
+            <a href="#" class="m-item item m-mobile-hide"><i class="calendar alternate icon"></i>个人助理</a>
+            <a href="/ConvenientOfficeSystem/user/manager" class="m-item item m-mobile-hide"><i class="sun  icon"></i>系统管理</a>
+            <a href="/ConvenientOfficeSystem/user/logout" class="m-item item m-mobile-hide m-margin-lr-large">注销</a>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+
+<!--  中间内容  -->
+<div class="ui  attached segment m-container">
+    <table class="ui celled table">
+        <thead>
+        <tr>
+            <th>账户</th>
+            <th>姓名</th>
+            <th>部门</th>
+            <th>职务</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody id="userList">
+
+
+        </tbody>
+        <tfoot>
+        <tr>
+            <th colspan="5">
+                <div class="ui right floated pagination menu">
+                    <a class="icon item" id="prevPage"><i class="left chevron icon"></i></a>
+                    <div class="ui floated pagination menu" id="turnPage">
+<!--                        <a href="" value=""></a>-->
+                    </div>
+                    <a class="icon item" id="nextPage"><i class="right chevron icon"></i></a>
+                </div>
+            </th>
+        </tr>
+        </tfoot>
+    </table>
+
+
+</div>
+
+<!--  模态框  -->
+    <div>
+        <form id="editUserForm" class="ui modal">
+
+            <!--        <div class="ui modal">-->
+            <div class="header">编辑</div>
+            <i class="close icon"></i>
+            <div class="m-container-small m-paded-tp-big">
+                <div class="ui container">
+                    <div class="ui top attached segment" id="modalContext">
+                                                <div class="ui labeled disabled input fluid m-margin-tb-tiny">
+                                                    <div class="ui  label">
+                                                        账户
+                                                    </div>
+                                                    <input type="text" id="account">
+                                                </div>
+                                                <div class="ui labeled input fluid m-margin-tb-tiny">
+                                                    <div class="ui label">
+                                                        姓名
+                                                    </div>
+                                                    <input type="text" id="name">
+                                                </div>
+                                                <div class="ui labeled input fluid m-margin-tb-tiny">
+                                                    <div class="ui label">
+                                                        部门
+                                                    </div>
+                                                    <input type="text"  id="department">
+                                                </div>
+                                                <div class="ui labeled input fluid m-margin-tb-tiny">
+                                                    <div class="ui label" >
+                                                        职务
+                                                    </div>
+                                                    <input type="text" id="occupation">
+                                                </div>
+                    </div>
+                </div>
+            </div>
+            <div class="actions">
+                <div class="ui black deny button">
+                    取消
+                </div>
+                <button class="ui positive right labeled icon button" type="submit" id="sureEdit" onclick="submitForm()">
+                    确认
+                    <i class="checkmark icon"  ></i>
+                </button>
+            </div>
+            <!--        </div>-->
+        </form>
+    </div>
+
+
+
+
+<footer class="ui inverted vertical segment m-paded-tp-massive foot" id="demo"  >
+    <div class="ui center aligned container">
+<!--        <div class="ui inverted section divider"></div>-->
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">© Copyright 2020. 三寸小屋的犄角旮旯 All Rights Reserved. </p>
+    </div>
+</footer>
+</body>
+<script th:src="@{/js/jquery-3.5.1.min.js}"></script>
+<script th:src="@{/js/semantic.min.js}"></script>
+
+<script>
+    $(function () {
+        toPage()
+    })
+
+    function getNextPage(page) {
+        let data = {};
+        data["size"] = 5;
+        data["page"] = page;
+        let maxPage = 0;
+        $.ajax({
+            type: "POST",
+            async:false,
+            url: "/ConvenientOfficeSystem/system/getUserList",
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                let list = data.resultData.data;
+                console.log(data)
+                let html = '';
+                for (let i = 0; i < list.length; i++) {
+                    html += '            <tr><td>' + list[i].account + '</td><td>' + list[i].name + '</td><td>' + list[i].department + '</td><td>' + list[i].occupation + '</td><td>\n' +
+                        '                    <div class="ui buttons">\n' +
+                        '                        <button class="ui button" onclick="editUser(this)">编辑</button>\n' +
+                        '                        <div class="or"></div>\n' +
+                        '                        <button class="ui red button" onclick="deleteUser(this)">删除</button>\n' +
+                        '                    </div>\n' +
+                        '                </td>\n' +
+                        '            </tr>';
+
+                }
+                $('#userList').html(html);
+            maxPage = data.resultData.totalPage;
+            }
+        })
+        return maxPage;
+    }
+
+    function toPage() {
+        let aBtn = $('#btn');
+        let prev = $('#prevPage');
+        let next = $('#nextPage');
+        let maxPage;
+        let nowPage = 1;
+        let html = '';
+        maxPage = getNextPage(nowPage);
+        for (let i = 1;i <= maxPage;i++){
+            html +='<a class="item btn ">'+i+'</a>';
+        }
+        $('#turnPage').html(html);
+        prev.click(function () {
+            if (nowPage <= 1){
+                return;
+            }
+            nowPage--;
+            getNextPage(nowPage);
+        })
+        next.click(function () {
+            if (nowPage >= maxPage){
+                return;
+            }
+            nowPage++;
+            getNextPage(nowPage);
+        })
+
+    }
+
+    function deleteUser(obj) {
+        let userRow = $(obj).parent().parent().parent().find("td");
+        let userId = userRow.eq(0).text();
+        let data = {};
+        console.log(userId);
+        data["userId"] = userId;
+        $.ajax({
+            type: "POST",
+            url: "/ConvenientOfficeSystem/system/deleteUser",
+            dataType: "json",
+            data:JSON.stringify(data),
+            contentType: "application/json;charset=UTF-8",
+            success:function (data) {
+                let nowPage = data.resultData;
+                if (nowPage == "deleteError"){
+                    alert("您无法删除您自己");
+                    return;
+                }
+                getNextPage(nowPage);
+            }
+        })
+    }
+
+    function editUser(obj) {
+        let userRow = $(obj).parent().parent().parent().find("td");
+        let userId = userRow.eq(0).text();
+        let data = {};
+        let html = '';
+        console.log(userId);
+        data["userId"] = userId;
+        $.ajax({
+            type: "POST",
+            url: "/ConvenientOfficeSystem/system/getUser",
+            dataType: "json",
+            data:JSON.stringify(data),
+            contentType: "application/json;charset=UTF-8",
+            success:function (data) {
+                console.log(data);
+                let user = data.resultData;
+                $('#account').val(user.account);
+                $('#name').val(user.name);
+                $('#department').val(user.department);
+                $('#occupation').val(user.occupation);
+
+                // getNextPage(nowPage);
+            }
+        })
+        $('.ui.modal').modal('show')
+    }
+
+//    提交编辑表单
+    function submitForm(){
+        let account = $('#account').val();
+        let name = $('#name').val();
+        let department = $('#department').val();
+        let occupation = $('#occupation').val();
+        let data = {};
+        data["userId"] = account;
+        data["name"] = name;
+        data["department"] = department;
+        data["occupation"] = occupation;
+        console.log("修改后数据:"+data);
+
+        $.ajax({
+            type: "POST",
+            async:false,
+            url: "/ConvenientOfficeSystem/system/editUser",
+            data: JSON.stringify(data),
+            dataType: "json",
+            contentType: "application/json;charset=UTF-8",
+            success: function (data) {
+                let nowPage = data.resultData;
+            }
+        })
+    }
+
+
+
+
+
+
+
+</script>
+
+</html>

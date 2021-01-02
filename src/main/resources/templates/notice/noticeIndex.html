@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="icon" type="image/x-icon" th:href="@{/images/notice.ico}">
+        <link rel="stylesheet" th:href="@{/css/notice/bootstrap-4.3.1.min.css}" crossorigin="anonymous">
+        <link rel="stylesheet" th:href="@{/css/notice/notice.css}">
+        <title>公告管理模块-已发布</title>
+    </head>
+    <body>
+        <div class="nk-container">
+            <!-- 头部 -->
+            <header class="bg-dark sticky-top" th:fragment="header">
+                <div class="container">
+                    <!-- 导航 -->
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <!-- 功能 -->
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav mr-auto">
+                                <li class="nav-item ml-3 btn-group-vertical">
+                                    <a class="nav-link" th:href="@{/notice/returnIndex}">主页</a>
+                                </li>
+                                <li class="nav-item ml-3 btn-group-vertical">
+                                    <a class="nav-link" th:href="@{/notice/noticeIndex}">首页</a>
+                                </li>
+                                <li class="nav-item ml-3 btn-group-vertical" th:if="${authority==1}">
+                                    <a class="nav-link" th:href="@{/notice/auditNotice}">审核公告</a>
+                                </li>
+                                <li class="nav-item ml-3 btn-group-vertical">
+                                    <a class="nav-link" th:href="@{/notice/addNotice}">草拟公告</a>
+                                </li>
+                                <li class="nav-item ml-3 btn-group-vertical">
+                                    <a class="nav-link" th:href="@{/notice/draftsNotice}">草稿箱</a>
+                                </li>
+                                <li class="nav-item ml-3 btn-group-vertical">
+                                    <a class="nav-link" th:href="@{/notice/deleteDraftNotice}">删除公告</a>
+                                </li>
+                                <li class="nav-item ml-3 btn-group-vertical">
+                                    <a class="nav-link" th:href="@{/notice/deletedNotice}">已删除</a>
+                                </li>
+                                <li class="nav-item ml-3 btn-group-vertical">
+                                    <a class="nav-link" th:href="@{/user/logout}">注销</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </header>
+
+            <!-- 内容 -->
+            <div class="main">
+                <div class="container">
+                    <!-- 公告列表 -->
+                    <ul class="list-unstyled">
+                        <h3 class="text-center text-info border-bottom pb-3">已&nbsp;&nbsp;发&nbsp;&nbsp;布</h3>
+                        <li class="media pb-3 pt-3 mb-3 border-bottom" th:each="map:${notices}">
+                            <div class="media-body">
+                                <h4 class="mt-0 mb-3">
+                                    <a th:href="@{/notice/detail(current=${noticePageUtil.current},noticeno=${map.notice.noticeno})}"
+                                       th:utext="${map.notice.topic}" th:class="${map.notice.auditstatus==1?'fontBlue':'fontRed'}">公告</a>
+                                </h4>
+                                <div class="text-muted font-size-12">
+                                    <u class="mr-3" th:utext="${map.notice.publishngmaker}">寒江雪</u> <u class="mr-3" th:utext="${map.notice.deaprtment}">研发部</u>
+                                    发布于 <b th:text="${#dates.format(map.notice.publishingtime,'yyyy-MM-dd HH:mm:ss')}">2019-04-15
+                                    15:32:18</b>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- 分页 -->
+                    <nav class="mt-5" th:if="${noticePageUtil.rows>0}" th:fragment="pagination">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item">
+                                <a class="page-link" th:href="@{${noticePageUtil.path}(current=1)}">首页</a>
+                            </li>
+                            <li th:class="|page-item ${noticePageUtil.current==1?'disabled':''}|">
+                                <a class="page-link"
+                                   th:href="@{${noticePageUtil.path}(current=${noticePageUtil.current-1})}">上一页</a>
+                            </li>
+                            <li th:class="|page-item ${i==noticePageUtil.current?'active':''}|"
+                                th:each="i:${#numbers.sequence(noticePageUtil.from,noticePageUtil.to)}">
+                                <a class="page-link" th:href="@{${noticePageUtil.path}(current=${i})}"
+                                   th:text="${i}">1</a>
+                            </li>
+                            <li th:class="|page-item ${noticePageUtil.current==noticePageUtil.total?'disabled':''}|">
+                                <a class="page-link"
+                                   th:href="@{${noticePageUtil.path}(current=${noticePageUtil.current+1})}">下一页</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link"
+                                   th:href="@{${noticePageUtil.path}(current=${noticePageUtil.getTotal()})}">末页</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- 尾部 -->
+            <footer class="bg-dark" th:fragment="footer">
+                <div class="container">
+                    <div class="row">
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </body>
+</html>

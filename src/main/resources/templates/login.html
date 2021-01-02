@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>协同办公平台登陆</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="robots" content="all,follow">
+  <link rel="stylesheet" href="https://www.jq22.com/jquery/bootstrap-4.2.1.css">
+  <link rel="stylesheet" th:href="@{/css/style.default.css}" id="theme-stylesheet">
+</head>
+<body>
+<div class="page login-page">
+  <div class="container d-flex align-items-center">
+    <div class="form-holder has-shadow">
+      <div class="row">
+        <!-- Logo & Information Panel-->
+        <div class="col-lg-6">
+          <div class="info d-flex align-items-center">
+            <div class="content">
+              <div class="logo">
+                <h1>欢迎登录</h1>
+              </div>
+              <p>协同办公平台</p>
+            </div>
+          </div>
+        </div>
+        <!-- Form Panel    -->
+        <div class="col-lg-6 bg-white">
+          <div class="form d-flex align-items-center">
+            <div class="content">
+              <form class="form-validate" id="submitForm" onsubmit="return false">
+                <div class="form-group">
+                  <input id="username" type="text" name="username"  required data-msg="用户名不能为空"
+                         placeholder="用户名" class="input-material  ">
+                </div>
+                <div class="form-group">
+                  <input id="password" type="password" name="password" required data-msg="密码不能为空"
+                         placeholder="密码" class="input-material ">
+                </div>
+                <div class="form-group">
+                  <input id="telephone" type="text" name="telephone" required data-msg="手机号不能为空"
+                         placeholder="手机号" class="input-material ">
+                </div>
+                <div class="form-group">
+                  <input id="checkCode" type="text" name="checkCode" required  data-msg="验证码不能为空"
+                         placeholder="请输入6位验证码" class="input-material ">
+                  <button id="getCheckCode" style="margin-top: 20px"
+                          type="button"
+                          class=" btn btn-info">发送验证码
+                  </button>
+                </div>
+                <div class="form-group">
+
+                </div>
+                <button id="login" type="submit" value="login" class="btn btn-primary">登录</button>
+                <div style="margin-top: -40px;">
+                  <div class="custom-control custom-checkbox " style="float: right;">
+                    <input type="checkbox" class="custom-control-input" id="check1"
+                           name="remember-me">
+                    <label class="custom-control-label" for="check1">记住密码&nbsp;&nbsp;</label>
+                  </div>
+                </div>
+              </form>
+              <br/>
+              <small>没有账号?</small><a href="register.html" class="signup">&nbsp;注册</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- JavaScript files-->
+<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script src="https://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
+<script th:src="@{/vendor/jquery-validation/jquery.validate.min.js}"></script><!--表单验证-->
+<!-- Main File-->
+<script th:src="@{/js/front.js}"></script>
+<script>
+  // 定义短信验证码全局变量
+  let checkCode = '';
+  // 定义倒计时全局变量
+  let wait = 60;
+
+
+  $('#login').click(function () {
+    let check_code = $('#checkCode').val();
+    if (checkCode.trim() == check_code.trim() && check_code != null) {
+      let login_username = $('#username').val();
+      let login_password = $('#password').val();
+      if (!(login_password != null && login_password != ''&& login_username != null && login_username != '')){
+        alert("用户名或账号为空!")
+        return;
+      }
+      let submit_data = new FormData();
+      submit_data.append("username", login_username);
+      submit_data.append("password", login_password);
+      $.ajax({
+        url: "/ConvenientOfficeSystem/user/login",
+        data: submit_data,
+        type: "POST",
+        dataType: "html",
+        // async: false,
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: function (data) {
+          window.location.href = "/ConvenientOfficeSystem/user/index";
+        }
+      })
+    } else {
+      alert("验证码错误");
+    }
+  })
+
+  // 获取手机验证码
+  $('#getCheckCode').click(function () {
+    let telephone = $('#telephone').val()
+
+    if (!(telephone != null && telephone != '')){
+      alert("手机号为空")
+      return;
+    }
+    $.ajax({
+      type: "GET",
+      async: false,
+      url: "/ConvenientOfficeSystem/user/message/" + telephone,
+      success: function (data) {
+        alert("发送成功，请注意查收")
+        tick(data);
+        checkCode = data.resultData
+        console.log(checkCode)
+      }
+    })
+  })
+
+
+
+  // 设置倒计时
+  function tick(o) {
+    if (wait == 0) {
+      $('#getCheckCode').removeAttr("disabled");
+      $('#getCheckCode').text("发送验证码");
+      wait = 60;
+    } else {
+      $('#getCheckCode').attr("disabled", "disabled");
+      $('#getCheckCode').text(wait + "秒后可以重新发送");
+      wait--;
+      setTimeout(function () {
+                tick(o)
+              },
+              1000)
+    }
+  }
+
+  // $(function (){
+  //     $('#submitForm').bootstrapValidator({
+  //         message: 'This value is not valid',
+  //         feedbackIcons: {
+  //             valid: 'glyphicon glyphicon-ok',
+  //             invalid: 'glyphicon glyphicon-remove',
+  //             validating: 'glyphicon glyphicon-refresh'
+  //         },
+  //         fields: {
+  //             username: {
+  //                 message: '用户名验证失败',
+  //                 validators: {
+  //                     notEmpty: {
+  //                         message: '用户名不能为空'
+  //                     }
+  //                 }
+  //             },
+  //             password: {
+  //                 validators: {
+  //                     notEmpty: {
+  //                         message: '邮箱地址不能为空'
+  //                     }
+  //                 }
+  //             }
+  //         }
+  //     })
+  // })
+
+
+  // 正则验证
+  // 手机
+  // function telephoneCheck(telephone){
+  //     let pattern = /^1[0-9]{10}$
+  //     return pattern.test(telephone)
+  // }
+
+</script>
+</body>
+</html>

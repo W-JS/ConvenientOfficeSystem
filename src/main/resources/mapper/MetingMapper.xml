@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.huat.mapper.MetingMapper">
+  <resultMap id="BaseResultMap" type="cn.huat.pojo.Meting">
+    <id column="meetingSerialNo" property="meetingserialno" jdbcType="VARCHAR"/>
+    <result column="meetingName" property="meetingname" jdbcType="VARCHAR"/>
+    <result column="topic" property="topic" jdbcType="VARCHAR"/>
+    <result column="organizer" property="organizer" jdbcType="INTEGER"/>
+    <result column="chiefOrganizer" property="chieforganizer" jdbcType="INTEGER"/>
+    <result column="spokesman" property="spokesman" jdbcType="INTEGER"/>
+    <result column="meetingLocus" property="meetinglocus" jdbcType="VARCHAR"/>
+    <result column="startTime" property="starttime" jdbcType="TIMESTAMP"/>
+    <result column="endTime" property="endtime" jdbcType="TIMESTAMP"/>
+    <result column="applicator" property="applicator" jdbcType="INTEGER"/>
+    <result column="auditor" property="auditor" jdbcType="INTEGER"/>
+    <result column="auditing" property="auditing" jdbcType="VARCHAR"/>
+    <result column="informer" property="informer" jdbcType="INTEGER"/>
+    <result column="minuteRecorder" property="minuterecorder" jdbcType="INTEGER"/>
+    <result column="state" property="state" jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    meetingSerialNo, meetingName, topic, organizer, chiefOrganizer, spokesman, meetingLocus,
+    startTime, endTime, applicator, auditor, auditing, informer, minuteRecorder, state
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List"/>
+    from Meting
+    where meetingSerialNo = #{meetingserialno,jdbcType=VARCHAR}
+  </select>
+  <select id="findall" resultType="cn.huat.pojo.Meting">
+
+
+    select *from Meting;
+  </select>
+  <select id="findByUser" resultType="java.lang.String" parameterType="java.lang.Integer">
+    select meetingSerialNo  from Meting where minuteRecorder=#{minuteRecorder,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from Meting
+    where meetingSerialNo = #{meetingserialno,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.huat.pojo.Meting">
+    insert into Meting (meetingSerialNo, meetingName, topic,
+                        organizer, chiefOrganizer, spokesman,
+                        meetingLocus, startTime, endTime,
+                        applicator, auditor, auditing,
+                        informer, minuteRecorder, state
+    )
+    values (#{meetingserialno,jdbcType=VARCHAR}, #{meetingname,jdbcType=VARCHAR}, #{topic,jdbcType=VARCHAR},
+            #{organizer,jdbcType=INTEGER}, #{chieforganizer,jdbcType=INTEGER}, #{spokesman,jdbcType=INTEGER},
+            #{meetinglocus,jdbcType=VARCHAR}, #{starttime,jdbcType=TIMESTAMP} , #{endtime,jdbcType=TIMESTAMP},
+            #{applicator,jdbcType=INTEGER}, #{auditor,jdbcType=INTEGER}, #{auditing,jdbcType=VARCHAR},
+            #{informer,jdbcType=INTEGER}, #{minuterecorder,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}
+           )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.huat.pojo.Meting">
+    insert into Meting
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="meetingserialno != null">
+        meetingSerialNo,
+      </if>
+      <if test="meetingname != null">
+        meetingName,
+      </if>
+      <if test="topic != null">
+        topic,
+      </if>
+      <if test="organizer != null">
+        organizer,
+      </if>
+      <if test="chieforganizer != null">
+        chiefOrganizer,
+      </if>
+      <if test="spokesman != null">
+        spokesman,
+      </if>
+      <if test="meetinglocus != null">
+        meetingLocus,
+      </if>
+      <if test="starttime != null">
+        startTime,
+      </if>
+      <if test="endtime != null">
+        endTime,
+      </if>
+      <if test="applicator != null">
+        applicator,
+      </if>
+      <if test="auditor != null">
+        auditor,
+      </if>
+      <if test="auditing != null">
+        auditing,
+      </if>
+      <if test="informer != null">
+        informer,
+      </if>
+      <if test="minuterecorder != null">
+        minuteRecorder,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="meetingserialno != null">
+        #{meetingserialno,jdbcType=VARCHAR},
+      </if>
+      <if test="meetingname != null">
+        #{meetingname,jdbcType=VARCHAR},
+      </if>
+      <if test="topic != null">
+        #{topic,jdbcType=VARCHAR},
+      </if>
+      <if test="organizer != null">
+        #{organizer,jdbcType=INTEGER},
+      </if>
+      <if test="chieforganizer != null">
+        #{chieforganizer,jdbcType=INTEGER},
+      </if>
+      <if test="spokesman != null">
+        #{spokesman,jdbcType=INTEGER},
+      </if>
+      <if test="meetinglocus != null">
+        #{meetinglocus,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null">
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applicator != null">
+        #{applicator,jdbcType=INTEGER},
+      </if>
+      <if test="auditor != null">
+        #{auditor,jdbcType=INTEGER},
+      </if>
+      <if test="auditing != null">
+        #{auditing,jdbcType=VARCHAR},
+      </if>
+      <if test="informer != null">
+        #{informer,jdbcType=INTEGER},
+      </if>
+      <if test="minuterecorder != null">
+        #{minuterecorder,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.huat.pojo.Meting">
+    update Meting
+    <set>
+      <if test="meetingname != null">
+        meetingName = #{meetingname,jdbcType=VARCHAR},
+      </if>
+      <if test="topic != null">
+        topic = #{topic,jdbcType=VARCHAR},
+      </if>
+      <if test="organizer != null">
+        organizer = #{organizer,jdbcType=INTEGER},
+      </if>
+      <if test="chieforganizer != null">
+        chiefOrganizer = #{chieforganizer,jdbcType=INTEGER},
+      </if>
+      <if test="spokesman != null">
+        spokesman = #{spokesman,jdbcType=INTEGER},
+      </if>
+      <if test="meetinglocus != null">
+        meetingLocus = #{meetinglocus,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null">
+        startTime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        endTime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="applicator != null">
+        applicator = #{applicator,jdbcType=INTEGER},
+      </if>
+      <if test="auditor != null">
+        auditor = #{auditor,jdbcType=INTEGER},
+      </if>
+      <if test="auditing != null">
+        auditing = #{auditing,jdbcType=VARCHAR},
+      </if>
+      <if test="informer != null">
+        informer = #{informer,jdbcType=INTEGER},
+      </if>
+      <if test="minuterecorder != null">
+        minuteRecorder = #{minuterecorder,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where meetingSerialNo = #{meetingserialno,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.huat.pojo.Meting">
+    update Meting
+    set meetingName = #{meetingname,jdbcType=VARCHAR},
+        topic = #{topic,jdbcType=VARCHAR},
+        organizer = #{organizer,jdbcType=INTEGER},
+        chiefOrganizer = #{chieforganizer,jdbcType=INTEGER},
+        spokesman = #{spokesman,jdbcType=INTEGER},
+        meetingLocus = #{meetinglocus,jdbcType=VARCHAR},
+        startTime = startTime = #{starttime,jdbcType=TIMESTAMP},
+        endTime = endTime = #{endtime,jdbcType=TIMESTAMP},
+        applicator = #{applicator,jdbcType=INTEGER},
+        auditor = #{auditor,jdbcType=INTEGER},
+        auditing = #{auditing,jdbcType=VARCHAR},
+        informer = #{informer,jdbcType=INTEGER},
+        minuteRecorder = #{minuterecorder,jdbcType=INTEGER},
+        state = #{state,jdbcType=VARCHAR}
+    where meetingSerialNo = #{meetingserialno,jdbcType=VARCHAR}
+  </update>
+  <update id="setState">
+    update Meting set state='会议已举行'  where meetingSerialNo=#{meetingserialno,jdbcType=VARCHAR};
+  </update>
+</mapper>

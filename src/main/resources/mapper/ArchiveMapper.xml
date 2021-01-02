@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.huat.mapper.ArchiveMapper" >
+  <resultMap id="BaseResultMap" type="cn.huat.pojo.Archive" >
+    <id column="archiveNo" property="archiveno" jdbcType="VARCHAR" />
+    <result column="archiveName" property="archivename" jdbcType="VARCHAR" />
+    <result column="storagePeriod" property="storageperiod" jdbcType="INTEGER" />
+    <result column="copies" property="copies" jdbcType="INTEGER" />
+    <result column="closeOrNot" property="closeornot" jdbcType="INTEGER" />
+    <result column="capacity" property="capacity" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    archiveNo, archiveName, storagePeriod, copies, closeOrNot,capacity
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from Archive
+    where archiveNo = #{archiveno,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from Archive
+    where archiveNo = #{archiveno,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.huat.pojo.Archive" >
+    insert into Archive (archiveNo, archiveName, storagePeriod, 
+      copies, closeOrNot,capacity)
+    values (#{archiveno,jdbcType=VARCHAR}, #{archivename,jdbcType=VARCHAR}, #{storageperiod,jdbcType=INTEGER}, 
+      #{copies,jdbcType=INTEGER}, #{closeornot,jdbcType=INTEGER}, #{capacity,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.huat.pojo.Archive" >
+    insert into Archive
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="archiveno != null" >
+        archiveNo,
+      </if>
+      <if test="archivename != null" >
+        archiveName,
+      </if>
+      <if test="storageperiod != null" >
+        storagePeriod,
+      </if>
+      <if test="copies != null" >
+        copies,
+      </if>
+      <if test="closeornot != null" >
+        closeOrNot,
+      </if>
+      <if test="capacity != null" >
+        capacity,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="archiveno != null" >
+        #{archiveno,jdbcType=VARCHAR},
+      </if>
+      <if test="archivename != null" >
+        #{archivename,jdbcType=VARCHAR},
+      </if>
+      <if test="storageperiod != null" >
+        #{storageperiod,jdbcType=INTEGER},
+      </if>
+      <if test="copies != null" >
+        #{copies,jdbcType=INTEGER},
+      </if>
+      <if test="closeornot != null" >
+        #{closeornot,jdbcType=INTEGER},
+      </if>
+      <if test="capacity != null" >
+        #{capacity,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.huat.pojo.Archive" >
+    update Archive
+    <set >
+      <if test="archivename != null" >
+        archiveName = #{archivename,jdbcType=VARCHAR},
+      </if>
+      <if test="storageperiod != null" >
+        storagePeriod = #{storageperiod,jdbcType=INTEGER},
+      </if>
+      <if test="copies != null" >
+        copies = #{copies,jdbcType=INTEGER},
+      </if>
+      <if test="closeornot != null" >
+        closeOrNot = #{closeornot,jdbcType=INTEGER},
+      </if>
+      <if test="capacity != null" >
+        capacity = #{closeornot,jdbcType=INTEGER},
+      </if>
+    </set>
+    where archiveNo = #{archiveno,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.huat.pojo.Archive" >
+    update Archive
+    set archiveName = #{archivename,jdbcType=VARCHAR},
+      storagePeriod = #{storageperiod,jdbcType=INTEGER},
+      copies = #{copies,jdbcType=INTEGER},
+      closeOrNot = #{closeornot,jdbcType=INTEGER},
+      capacity = #{closeornot,jdbcType=INTEGER}
+    where archiveNo = #{archiveno,jdbcType=VARCHAR}
+  </update>
+  <select id="limitOfArchive" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+     from Archive
+    <where>
+      <if test="archivename != null">
+        and archivename like concat('%', #{archivename}, '%')
+      </if>
+    </where>
+    limit #{page}, #{pageSize}
+  </select>
+
+  <select id="countOfArchive" resultType="int">
+    select count(*) from Archive
+    <where>
+      <if test="archivename != null">
+        and archivename like concat('%', #{archivename}, '%')
+      </if>
+    </where>
+  </select>
+
+  <select id="getAllArchive" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" />
+    from Archive
+    where closeOrNot = 1
+  </select>
+
+  <select id="selectByName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from Archive
+    where archiveName = #{archivename,jdbcType=VARCHAR}
+  </select>
+</mapper>

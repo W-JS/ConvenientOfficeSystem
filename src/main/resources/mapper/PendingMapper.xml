@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.huat.mapper.PendingMapper" >
+  <resultMap id="BaseResultMap" type="cn.huat.pojo.Pending" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user" property="user" jdbcType="INTEGER" />
+    <result column="submitTime" property="submittime" jdbcType="TIMESTAMP" />
+    <result column="topic" property="topic" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="submitter" property="submitter" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user, submitTime, topic, content, submitter
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from Pending
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from Pending
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.huat.pojo.Pending" >
+    insert into Pending (id, user, submitTime, 
+      topic, content, submitter
+      )
+    values (#{id,jdbcType=INTEGER}, #{user,jdbcType=INTEGER}, #{submittime,jdbcType=TIMESTAMP}, 
+      #{topic,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{submitter,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.huat.pojo.Pending" >
+    insert into Pending
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="user != null" >
+        user,
+      </if>
+      <if test="submittime != null" >
+        submitTime,
+      </if>
+      <if test="topic != null" >
+        topic,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="submitter != null" >
+        submitter,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="user != null" >
+        #{user,jdbcType=INTEGER},
+      </if>
+      <if test="submittime != null" >
+        #{submittime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="topic != null" >
+        #{topic,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="submitter != null" >
+        #{submitter,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.huat.pojo.Pending" >
+    update Pending
+    <set >
+      <if test="user != null" >
+        user = #{user,jdbcType=INTEGER},
+      </if>
+      <if test="submittime != null" >
+        submitTime = #{submittime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="topic != null" >
+        topic = #{topic,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="submitter != null" >
+        submitter = #{submitter,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.huat.pojo.Pending" >
+    update Pending
+    set user = #{user,jdbcType=INTEGER},
+      submitTime = #{submittime,jdbcType=TIMESTAMP},
+      topic = #{topic,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      submitter = #{submitter,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.huat.mapper.BorrowingMapper" >
+  <resultMap id="BaseResultMap" type="cn.huat.pojo.Borrowing" >
+    <id column="borrowingNo" property="borrowingno" jdbcType="VARCHAR" />
+    <result column="archiveNo" property="archiveno" jdbcType="VARCHAR" />
+    <result column="borrower" property="borrower" jdbcType="INTEGER" />
+    <result column="ileNo" property="ileno" jdbcType="VARCHAR" />
+    <result column="borrowingPeriod" property="borrowingperiod" jdbcType="INTEGER" />
+    <result column="applicationTime" property="applicationtime" jdbcType="TIMESTAMP" />
+    <result column="returnTime" property="returntime" jdbcType="TIMESTAMP" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+    <result column="approvedTime" property="approvedtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    borrowingNo, archiveNo, borrower, ileNo, borrowingPeriod, applicationTime, returnTime, 
+    state, approvedTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from Borrowing
+    where borrowingNo = #{borrowingno,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from Borrowing
+    where borrowingNo = #{borrowingno,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.huat.pojo.Borrowing" >
+    insert into Borrowing (borrowingNo, archiveNo, borrower, 
+      ileNo, borrowingPeriod, applicationTime, 
+      returnTime, state, approvedTime
+      )
+    values (#{borrowingno,jdbcType=VARCHAR}, #{archiveno,jdbcType=VARCHAR}, #{borrower,jdbcType=INTEGER}, 
+      #{ileno,jdbcType=VARCHAR}, #{borrowingperiod,jdbcType=INTEGER}, #{applicationtime,jdbcType=TIMESTAMP}, 
+      #{returntime,jdbcType=TIMESTAMP}, #{state,jdbcType=VARCHAR}, #{approvedtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.huat.pojo.Borrowing" >
+    insert into Borrowing
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="borrowingno != null" >
+        borrowingNo,
+      </if>
+      <if test="archiveno != null" >
+        archiveNo,
+      </if>
+      <if test="borrower != null" >
+        borrower,
+      </if>
+      <if test="ileno != null" >
+        ileNo,
+      </if>
+      <if test="borrowingperiod != null" >
+        borrowingPeriod,
+      </if>
+      <if test="applicationtime != null" >
+        applicationTime,
+      </if>
+      <if test="returntime != null" >
+        returnTime,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="approvedtime != null" >
+        approvedTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="borrowingno != null" >
+        #{borrowingno,jdbcType=VARCHAR},
+      </if>
+      <if test="archiveno != null" >
+        #{archiveno,jdbcType=VARCHAR},
+      </if>
+      <if test="borrower != null" >
+        #{borrower,jdbcType=INTEGER},
+      </if>
+      <if test="ileno != null" >
+        #{ileno,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowingperiod != null" >
+        #{borrowingperiod,jdbcType=INTEGER},
+      </if>
+      <if test="applicationtime != null" >
+        #{applicationtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returntime != null" >
+        #{returntime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="approvedtime != null" >
+        #{approvedtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.huat.pojo.Borrowing" >
+    update Borrowing
+    <set >
+      <if test="archiveno != null" >
+        archiveNo = #{archiveno,jdbcType=VARCHAR},
+      </if>
+      <if test="borrower != null" >
+        borrower = #{borrower,jdbcType=INTEGER},
+      </if>
+      <if test="ileno != null" >
+        ileNo = #{ileno,jdbcType=VARCHAR},
+      </if>
+      <if test="borrowingperiod != null" >
+        borrowingPeriod = #{borrowingperiod,jdbcType=INTEGER},
+      </if>
+      <if test="applicationtime != null" >
+        applicationTime = #{applicationtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returntime != null" >
+        returnTime = #{returntime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=VARCHAR},
+      </if>
+      <if test="approvedtime != null" >
+        approvedTime = #{approvedtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where borrowingNo = #{borrowingno,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.huat.pojo.Borrowing" >
+    update Borrowing
+    set archiveNo = #{archiveno,jdbcType=VARCHAR},
+      borrower = #{borrower,jdbcType=INTEGER},
+      ileNo = #{ileno,jdbcType=VARCHAR},
+      borrowingPeriod = #{borrowingperiod,jdbcType=INTEGER},
+      applicationTime = #{applicationtime,jdbcType=TIMESTAMP},
+      returnTime = #{returntime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=VARCHAR},
+      approvedTime = #{approvedtime,jdbcType=TIMESTAMP}
+    where borrowingNo = #{borrowingno,jdbcType=VARCHAR}
+  </update>
+
+  <select id="getBorrowings" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from Borrowing
+  </select>
+
+  <select id="selectBorrowingByLimit" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from Borrowing where state != 4 and state != 1 and state != 2
+    limit #{page}, #{pageSize}
+  </select>
+
+  <select id="getCountOfBorrowing" resultType="int">
+    select count(*)
+    from Borrowing where state != 4 and state != 1 and state != 2
+  </select>
+
+  <select id="getBorrowingsByState" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from Borrowing
+    where state = 1
+  </select>
+
+  <select id="selectBorrowingByAccountAndFileNo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from Borrowing
+    where ileNo = #{ileno} and borrower = #{borrower}
+  </select>
+
+  <select id="selectBorrowingByLimit1" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from Borrowing
+    where state = 1
+    and borrower = #{borrower}
+    limit #{page}, #{pageSize}
+  </select>
+
+  <select id="getCountOfBorrowing1" resultType="int">
+    select count(*)
+    from Borrowing
+    where borrower = #{borrower}
+    and state = 1
+  </select>
+</mapper>

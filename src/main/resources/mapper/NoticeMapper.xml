@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.huat.mapper.NoticeMapper">
+
+    <!-- start -->
+
+    <sql id="selectFields">
+        noticeNo, publishngMaker, deaprtment, topic, content, publishingTime, expirationTime, state, auditStatus
+    </sql>
+
+    <sql id="insertFields">
+        noticeNo, publishngMaker, deaprtment, topic, content, publishingTime, expirationTime, state, auditStatus
+    </sql>
+
+    <!-- 查询已发布的所有公告 -->
+    <select id="selectAllNotices" resultType="Notice">
+        select
+        <include refid="selectFields"></include>
+        from Notice
+        where state = 1
+        and auditStatus = 1
+        order by expirationTime asc
+    </select>
+
+    <!-- 查询已发布的所有公告 -->
+    <select id="selectNotices" resultType="Notice">
+        select
+        <include refid="selectFields"></include>
+        from Notice
+        where deaprtment = #{deaprtment}
+        and state = 1
+        and auditStatus = 1
+        order by publishingtime desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!-- 查询当前用户已发布的所有公告 -->
+    <select id="selectNoticesById" resultType="Notice">
+        select
+        <include refid="selectFields"></include>
+        from Notice
+        where publishngMaker = #{publishngmaker}
+        and state = 1
+        order by publishingtime desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!-- 查询已发布未审核的所有公告 -->
+    <select id="selectAuditNoticesById" resultType="Notice">
+        select
+        <include refid="selectFields"></include>
+        from Notice
+        where state = 1
+        and auditStatus = 0
+        order by publishingtime asc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!-- 查询当前用户已保存的所有公告 -->
+    <select id="selectSaveNoticesById" resultType="Notice">
+        select
+        <include refid="selectFields"></include>
+        from Notice
+        where publishngMaker = #{publishngmaker}
+        and state = 2
+        order by publishingtime desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!-- 查询当前用户已删除的所有公告 -->
+    <select id="selectDeleteNoticesById" resultType="Notice">
+        select
+        <include refid="selectFields"></include>
+        from Notice
+        where publishngMaker = #{publishngmaker}
+        and state = 0
+        order by publishingtime desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <!-- 查询已发布的所有公告的行数 -->
+    <select id="selectNoticesRows" resultType="int">
+        select count(noticeNo)
+        from Notice
+        where state = 1
+        and auditStatus = 1
+    </select>
+
+    <!-- 查询当前用户已发布的所有公告的行数 -->
+    <select id="selectNoticesRowsById" resultType="int">
+        select count(noticeNo)
+        from Notice
+        where publishngMaker = #{publishngmaker}
+        and state = 1
+    </select>
+
+    <!-- 查询已发布未审核的所有公告的行数 -->
+    <select id="selectAuditNoticesRowsById" resultType="int">
+        select count(noticeNo)
+        from Notice
+        where state = 1
+        and auditStatus = 0
+    </select>
+
+    <!-- 查询当前用户已保存的所有公告的行数 -->
+    <select id="selectSaveNoticeRowsById" resultType="int">
+        select count(noticeNo)
+        from Notice
+        where publishngMaker = #{publishngmaker}
+        and state = 2
+    </select>
+
+    <!-- 查询当前用户已删除的所有公告的行数 -->
+    <select id="selectDeleteNoticeRowsById" resultType="int">
+        select count(noticeNo)
+        from Notice
+        where publishngMaker = #{publishngmaker}
+        and state = 0
+    </select>
+
+    <!-- 查询已发布的一个公告 -->
+    <select id="selectNoticeById" resultType="Notice">
+        select
+        <include refid="selectFields"></include>
+        from Notice
+        where noticeNo = #{noticeno}
+        and state = 1
+    </select>
+
+    <!-- 查询已发布未审核的一个公告 -->
+    <select id="selectAuditNoticeById" resultType="Notice">
+        select
+        <include refid="selectFields"></include>
+        from Notice
+        where noticeNo = #{noticeno}
+        and state = 1
+        and auditStatus = 0
+    </select>
+
+    <!-- 查询当前用户已保存的一个公告 -->
+    <select id="selectSaveNoticeById" resultType="Notice">
+        select
+        <include refid="selectFields"></include>
+        from Notice
+        where noticeNo = #{noticeno}
+        and state = 2
+    </select>
+
+    <!-- 查询已删除的一个公告 -->
+    <select id="selectNoticeByDelete" resultType="Notice">
+        select
+        <include refid="selectFields"></include>
+        from Notice
+        where noticeNo = #{noticeno}
+        and state = 0
+    </select>
+
+    <!-- 新建一个公告 -->
+    <insert id="insertNotice" parameterType="Notice">
+        insert into Notice(<include refid="insertFields"></include>)
+        values(#{noticeno}, #{publishngmaker}, #{deaprtment},#{topic}, #{content}, #{publishingtime}, #{expirationtime},
+        #{state}, #{auditstatus})
+    </insert>
+
+    <!-- 修改已保存的一个公告，并发布或保存 -->
+    <update id="updateNotice">
+        update Notice set topic = #{topic},content = #{content},publishingTime = #{publishingtime},expirationTime = #{expirationtime},state = #{state},auditStatus = #{auditstatus} where noticeno = #{noticeno}
+    </update>
+
+    <!-- 定时发布一个公告，实际上是修改公告的状态 -->
+    <update id="updateNoticeByStatus">
+        update Notice set state = #{state} where noticeno = #{noticeno}
+    </update>
+
+    <!-- 审核公告，实际上是修改公告的状态 -->
+    <update id="updateNoticeByAuditStatus">
+        update Notice set auditStatus = #{auditstatus} where noticeno = #{noticeno}
+    </update>
+
+    <!-- 假删除一个公告，实际上是修改公告的状态 -->
+    <update id="updateNoticeByDelete">
+        update Notice set publishingTime = #{publishingtime},state = #{state},auditStatus = #{auditstatus} where noticeno = #{noticeno}
+    </update>
+
+    <!-- 将已删除的公告重新发布 -->
+    <update id="updateNoticeByRePublish">
+        update Notice set publishingTime = #{publishingtime},state = #{state} where noticeno = #{noticeno}
+    </update>
+
+    <!-- 查询当前登录用户 -->
+    <select id="selectUserByAccount" resultType="User">
+        select account,name,department,occupation,accessAuthority
+        from tb_user
+        where account = #{account}
+    </select>
+
+    <!-- end -->
+
+    <resultMap id="BaseResultMap" type="cn.huat.pojo.Notice">
+        <id column="noticeNo" property="noticeno" jdbcType="VARCHAR"/>
+        <result column="publishngMaker" property="publishngmaker" jdbcType="VARCHAR"/>
+        <result column="deaprtment" property="deaprtment" jdbcType="VARCHAR"/>
+        <result column="topic" property="topic" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="publishingTime" property="publishingtime" jdbcType="TIMESTAMP"/>
+        <result column="expirationTime" jdbcType="TIMESTAMP" property="expirationtime"/>
+        <result column="state" property="state" jdbcType="INTEGER"/>
+        <result column="auditStatus" property="auditstatus" jdbcType="INTEGER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    noticeNo, publishngMaker, deaprtment, topic, content, publishingTime, expirationTime, state, auditStatus
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from Notice
+        where noticeNo = #{noticeno,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from Notice
+    where noticeNo = #{noticeno,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="cn.huat.pojo.Notice">
+    insert into Notice (noticeNo, publishngMaker, deaprtment,
+      topic, content, publishingTime,
+      expirationTime, state, auditStatus)
+    values (#{noticeno,jdbcType=VARCHAR}, #{publishngmaker,jdbcType=VARCHAR}, #{deaprtment,jdbcType=VARCHAR},
+      #{topic,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{publishingtime,jdbcType=TIMESTAMP},
+      #{expirationtime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{auditstatus,jdbcType=INTEGER})
+  </insert>
+    <insert id="insertSelective" parameterType="cn.huat.pojo.Notice">
+        insert into Notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="noticeno != null">
+                noticeNo,
+            </if>
+            <if test="publishngmaker != null">
+                publishngMaker,
+            </if>
+            <if test="deaprtment != null">
+                deaprtment,
+            </if>
+            <if test="topic != null">
+                topic,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="publishingtime != null">
+                publishingTime,
+            </if>
+            <if test="expirationtime != null">
+                expirationTime,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="auditstatus != null">
+                auditStatus,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="noticeno != null">
+                #{noticeno,jdbcType=VARCHAR},
+            </if>
+            <if test="publishngmaker != null">
+                #{publishngmaker,jdbcType=VARCHAR},
+            </if>
+            <if test="deaprtment != null">
+                #{deaprtment,jdbcType=VARCHAR},
+            </if>
+            <if test="topic != null">
+                #{topic,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="publishingtime != null">
+                #{publishingtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expirationtime != null">
+                #{expirationtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=INTEGER},
+            </if>
+            <if test="auditstatus != null">
+                #{auditstatus,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.huat.pojo.Notice">
+        update Notice
+        <set>
+            <if test="publishngmaker != null">
+                publishngMaker = #{publishngmaker,jdbcType=VARCHAR},
+            </if>
+            <if test="deaprtment != null">
+                deaprtment = #{deaprtment,jdbcType=VARCHAR},
+            </if>
+            <if test="topic != null">
+                topic = #{topic,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="publishingtime != null">
+                publishingTime = #{publishingtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="expirationtime != null">
+                expirationTime = #{expirationtime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=INTEGER},
+            </if>
+            <if test="auditstatus != null">
+                auditStatus = #{auditstatus,jdbcType=INTEGER},
+            </if>
+        </set>
+        where noticeNo = #{noticeno,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.huat.pojo.Notice">
+    update Notice
+    set publishngMaker = #{publishngmaker,jdbcType=VARCHAR},
+      deaprtment = #{deaprtment,jdbcType=VARCHAR},
+      topic = #{topic,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      publishingTime = #{publishingtime,jdbcType=TIMESTAMP},
+      expirationTime = #{expirationtime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=INTEGER},
+      auditStatus = #{auditstatus,jdbcType=INTEGER}
+    where noticeNo = #{noticeno,jdbcType=VARCHAR}
+  </update>
+</mapper>

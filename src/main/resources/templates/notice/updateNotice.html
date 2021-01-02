@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="icon" type="image/x-icon" th:href="@{/images/notice.ico}">
+        <link rel="stylesheet" th:href="@{/css/notice/bootstrap-4.3.1.min.css}" crossorigin="anonymous">
+        <link rel="stylesheet" th:href="@{/css/notice/notice.css}">
+        <title>公告管理模块-修改公告</title>
+    </head>
+    <body>
+        <div class="nk-container">
+            <!-- 头部 -->
+            <header th:replace="/notice/noticeIndex::header"></header>
+
+            <!-- 内容 -->
+            <div class="main">
+                <div class="container pl-5 pr-5 pt-3 pb-3 mt-3 mb-3">
+                    <h3 class="text-center text-info border-bottom pb-3">修&nbsp;&nbsp;改</h3>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="topic" class="col-form-label">主题：</label>
+                                <input type="text" class="form-control" id="topic" th:value="${notice.topic}">
+                                <span id="topicNum">0</span>/50
+                            </div>
+                            <div class="form-group">
+                                <label for="content" class="col-form-label">正文：</label>
+                                <textarea class="form-control" id="content" rows="15" th:utext="${notice.content}"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="dropdown timeLimit-left">
+                            <label class="label-font">有效期：</label>
+                            <input type="hidden" id="day" th:value="${day}">
+                            <button class="btn btn-secondary dropdown-toggle" id="defaultTimeBtn" data-toggle="dropdown"></button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <label class="dropdown-item" id="threeDaysLabel" for="threeDays">三天</label>
+                                <input type="hidden" id="threeDays" value="threeDays"/>
+                                <label class="dropdown-item" id="oneWeekLabel" for="oneWeek">一周</label>
+                                <input type="hidden" id="oneWeek" value="oneWeek"/>
+                                <label class="dropdown-item" id="oneMonthLabel" for="oneMonth">一个月</label>
+                                <input type="hidden" id="oneMonth" value="oneMonth"/>
+                                <label class="dropdown-item" id="oneYearLabel" for="oneYear">一年</label>
+                                <input type="hidden" id="oneYear" value="oneYear"/>
+                            </div>
+                        </div>
+
+                        <input type="hidden" id="noticeno" th:value="${notice.noticeno}">
+                        <button type="button" class="btn btn-primary" id="updatePublishBtn">发布</button>
+                        <button type="button" class="btn btn-info" id="updateSaveBtn" th:value="${current}">保存</button>
+                        <button type="button" class="btn btn-secondary" id="updateAbandonBtn" th:value="${current}" data-dismiss="modal">放弃</button>
+                    </div>
+                </div>
+                <!-- 提示框 -->
+                <div class="modal fade" id="hintModal" tabindex="-1" role="dialog" aria-labelledby="hintModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="hintModalLabel">提示</h5>
+                            </div>
+                            <div class="modal-body" id="hintBody">
+                                发布完毕!
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 尾部 -->
+            <footer th:replace="/notice/noticeIndex::footer"></footer>
+        </div>
+
+        <script th:src="@{/js/jquery-3.5.1.min.js}" crossorigin="anonymous"></script>
+        <script th:src="@{/js/popper-1.14.7.min.js}" crossorigin="anonymous"></script>
+        <script th:src="@{/js/bootstrap-4.3.1.min.js}" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/5.6.2/tinymce.min.js" crossorigin="anonymous"></script>
+        <script th:src="@{/js/notice/tinymce.js}"></script>
+        <script th:src="@{/js/notice/contextPath.js}"></script>
+        <script th:src="@{/js/notice/updateNotice.js}"></script>
+        <script th:src="@{/js/notice/timeLimit.js}"></script>
+    </body>
+</html>
