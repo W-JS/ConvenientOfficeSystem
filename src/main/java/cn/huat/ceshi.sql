@@ -1,1 +1,0 @@
-select count(meetingSerialNO) from Minute;
